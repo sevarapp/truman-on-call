@@ -1,0 +1,1556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Truman on Call: learn first aid by playing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --green:#00754A; --green-2:#0B8F5C; --deep:#063B27; --yellow:#FFC72C; --red:#D7263D;
+  --ink:#14211B; --muted:#51625A; --paper:#EEF3F0; --surface:#FFFFFF; --line:#CBD8D1;
+  --good-bg:#E1F4EA; --bad-bg:#FBE4E7; --shadow:0 10px 30px rgba(6,59,39,.14);
+  --display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
+  --body:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){--ink:#E6EFEA;--muted:#9DB2A8;--paper:#0B1510;--surface:#14221B;--line:#27392F;--good-bg:#12352A;--bad-bg:#3A1A20;--green:#1FA36B;--shadow:0 10px 30px rgba(0,0,0,.4)}
+}
+:root[data-theme="dark"]{--ink:#E6EFEA;--muted:#9DB2A8;--paper:#0B1510;--surface:#14221B;--line:#27392F;--good-bg:#12352A;--bad-bg:#3A1A20;--green:#1FA36B;--shadow:0 10px 30px rgba(0,0,0,.4)}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.5;min-height:100%;overflow-x:hidden}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--yellow);outline-offset:3px}
+h1,h2,h3{font-family:var(--display);line-height:1.02;margin:0}
+.hidden{display:none!important}
+.wrap{max-width:980px;margin:0 auto;padding:14px 14px 90px}
+
+/* ---------- top bar ---------- */
+.bar{display:flex;align-items:center;gap:10px;padding:8px 10px 8px 14px;background:var(--deep);color:#fff;border-radius:14px;position:sticky;top:env(safe-area-inset-top,0px);z-index:20;box-shadow:var(--shadow)}
+.brand{font-family:var(--display);font-size:24px;font-weight:800;display:flex;align-items:center;gap:8px;white-space:nowrap}
+.brand svg{width:44px;height:22px}
+.brand svg path{fill:none;stroke:var(--yellow);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:90;animation:ecg 2.2s linear infinite}
+@keyframes ecg{from{stroke-dashoffset:90}to{stroke-dashoffset:-90}}
+.bar .grow{flex:1}
+.chip{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.1);border-radius:999px;padding:4px 12px;font-family:var(--display);font-size:20px;font-weight:700}
+.chip small{font-family:var(--body);font-size:12px;font-weight:400;opacity:.8}
+.icon-btn{width:40px;height:40px;border-radius:12px;border:0;background:rgba(255,255,255,.1);color:#fff;display:grid;place-items:center;font-size:19px;flex:none}
+.icon-btn:hover{background:rgba(255,255,255,.2)}
+.hearts{display:flex;gap:3px}.hearts svg{width:22px;height:22px}
+.hearts svg.lost{animation:heartLoss .6s}
+@keyframes heartLoss{30%{transform:scale(1.5) rotate(-15deg)}100%{transform:scale(1)}}
+@media (max-width:640px){.brand span{display:none}.chip small{display:none}.hide-sm{display:none!important}}
+
+/* ---------- title ---------- */
+.title-screen{position:relative;margin-top:14px;border-radius:22px;overflow:hidden;background:radial-gradient(120% 90% at 80% 10%,#10a36a 0%,#00754A 38%,#063B27 100%);color:#fff;min-height:560px;display:grid;grid-template-columns:1.1fr .9fr;align-items:center;box-shadow:var(--shadow)}
+.title-screen .copy{padding:40px 36px;position:relative;z-index:2}
+.title-screen h1{font-size:clamp(64px,11vw,124px);font-weight:800;letter-spacing:-1px;line-height:.88}
+.title-screen h1 span{display:block;color:var(--yellow)}
+.title-screen p.lede{font-size:20px;max-width:34ch;margin:18px 0 0;opacity:.92}
+.facts{display:grid;gap:10px;margin-top:22px;max-width:40ch}
+.fact{display:flex;gap:12px;align-items:baseline;font-size:15px;opacity:.9}
+.fact b{font-family:var(--display);font-size:30px;color:var(--yellow);min-width:92px;white-space:nowrap}
+.cta{display:inline-flex;align-items:center;gap:10px;margin-top:26px;background:var(--yellow);color:#14211B;border:0;border-radius:14px;padding:16px 28px;font-family:var(--display);font-size:28px;font-weight:800;box-shadow:0 6px 0 #B98A00;transition:transform .1s}
+.cta:active{transform:translateY(4px);box-shadow:0 2px 0 #B98A00}
+.title-art{position:relative;height:100%;min-height:420px}
+.title-art svg{position:absolute;inset:0;width:100%;height:100%}
+.ecg-bg{position:absolute;left:0;right:0;top:50%;height:120px;opacity:.18;z-index:1}
+.ecg-bg path{fill:none;stroke:#fff;stroke-width:3;stroke-dasharray:1400;animation:ecgbg 5s linear infinite}
+@keyframes ecgbg{from{stroke-dashoffset:1400}to{stroke-dashoffset:-1400}}
+@media (max-width:760px){.title-screen{grid-template-columns:1fr}.title-art{min-height:300px;order:-1}.title-screen .copy{padding:8px 22px 30px}}
+
+/* ---------- map ---------- */
+.map-head{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin:18px 2px 10px;flex-wrap:wrap}
+.map-head h2{font-size:44px;font-weight:800}
+.map-head p{margin:2px 0 0;color:var(--muted)}
+.progress{min-width:200px}
+.progress .track{height:12px;background:var(--line);border-radius:999px;overflow:hidden}
+.progress .fill{height:100%;background:linear-gradient(90deg,var(--yellow),#FF9F1C);border-radius:999px;transition:width .8s cubic-bezier(.2,.8,.2,1)}
+.progress small{color:var(--muted)}
+.map-card{background:var(--surface);border-radius:22px;overflow:hidden;box-shadow:var(--shadow);border:2px solid var(--line)}
+.map-card svg{display:block;width:100%;height:auto}
+.node{cursor:pointer}
+.node .ring{fill:none;stroke:var(--yellow);stroke-width:5;opacity:0}
+.node.current .ring{animation:ring 1.6s ease-out infinite}
+@keyframes ring{0%{r:34;opacity:.9}100%{r:58;opacity:0}}
+.node:hover .disc,.node:focus-visible .disc{filter:brightness(1.08)}
+.node.locked{cursor:not-allowed}
+.pin{animation:pinBob 1.4s ease-in-out infinite;transform-box:fill-box;transform-origin:bottom center}
+@keyframes pinBob{50%{transform:translateY(-8px)}}
+.dash-path{stroke-dasharray:14 12;animation:march 1.2s linear infinite}
+@keyframes march{to{stroke-dashoffset:-26}}
+.side-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-top:14px}
+.side-card{display:flex;gap:14px;align-items:center;text-align:left;background:var(--surface);border:2px solid var(--line);border-radius:16px;padding:14px 16px}
+.side-card:hover{border-color:var(--green)}
+.side-card .big{font-size:34px;width:52px;height:52px;border-radius:14px;display:grid;place-items:center;background:var(--paper);flex:none}
+.side-card h3{font-size:24px}
+.side-card p{margin:0;color:var(--muted);font-size:14px}
+
+/* ---------- play ---------- */
+.stage{margin-top:14px;background:var(--surface);border-radius:20px;overflow:hidden;box-shadow:var(--shadow);border:2px solid var(--line)}
+.stage-head{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 16px}
+.stage-head h2{font-size:30px;font-weight:800}
+.steps-dots{display:flex;gap:6px}
+.steps-dots i{width:26px;height:8px;border-radius:999px;background:var(--line)}
+.steps-dots i.done{background:var(--green)}
+.steps-dots i.miss{background:var(--red)}
+.steps-dots i.now{background:var(--yellow)}
+.timer{height:10px;background:var(--line);position:relative}
+.timer i{position:absolute;inset:0;background:linear-gradient(90deg,#FFC72C,#FF9F1C);transform-origin:left;transition:background .3s}
+.timer.low i{background:var(--red)}
+.scene-wrap{position:relative;background:#CFE8F5;overflow:hidden}
+.scene-wrap svg.scene{display:block;width:100%;height:auto;touch-action:none}
+.scene-wrap .layer{position:absolute;inset:0}
+.scene-wrap .xfade{animation:xfade .55s ease forwards}
+@keyframes xfade{from{opacity:0}to{opacity:1}}
+.scene-wrap.shake{animation:shake .45s}
+@keyframes shake{20%,60%{transform:translateX(-9px)}40%,80%{transform:translateX(9px)}}
+.scene-wrap canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.vignette{position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 0 0 rgba(215,38,61,0);transition:box-shadow .4s}
+.vignette.danger{box-shadow:inset 0 0 90px 10px rgba(215,38,61,.45);animation:throb .8s ease-in-out infinite}
+@keyframes throb{50%{box-shadow:inset 0 0 60px 4px rgba(215,38,61,.3)}}
+.white-flash{position:absolute;inset:0;background:#fff;pointer-events:none;opacity:0}
+.white-flash.go{animation:wf .5s}
+@keyframes wf{0%{opacity:.95}100%{opacity:0}}
+
+/* SVG scene animation classes */
+.bob{animation:bob 3.2s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-2px)}}
+.eye{animation:blink 4.6s infinite;transform-box:fill-box;transform-origin:center}
+@keyframes blink{0%,94%,100%{transform:scaleY(1)}97%{transform:scaleY(.1)}}
+.cloud{animation:drift 60s linear infinite}
+.cloud.slow{animation-duration:90s}
+@keyframes drift{from{transform:translateX(-160px)}to{transform:translateX(960px)}}
+.drip{animation:drip 1.6s ease-in infinite;transform-box:fill-box}
+@keyframes drip{0%{transform:translateY(0);opacity:1}80%{opacity:1}100%{transform:translateY(40px);opacity:0}}
+.steam{animation:steam 2.4s ease-out infinite;transform-box:fill-box;transform-origin:bottom}
+@keyframes steam{0%{opacity:0;transform:translateY(6px) scaleY(.8)}40%{opacity:.9}100%{opacity:0;transform:translateY(-18px) scaleY(1.1)}}
+.flow{stroke-dasharray:6 8;animation:flow .5s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-14}}
+.pulse-soft{animation:pulseSoft 1.4s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+@keyframes pulseSoft{50%{transform:scale(1.08)}}
+.zzz{animation:zzz 2.4s ease-out infinite;transform-box:fill-box}
+@keyframes zzz{0%{opacity:0;transform:translate(0,6px)}30%{opacity:1}100%{opacity:0;transform:translate(14px,-22px)}}
+.drop-in{animation:dropIn .7s cubic-bezier(.3,1.6,.5,1) both;transform-box:fill-box;transform-origin:bottom center}
+@keyframes dropIn{0%{transform:translateY(-120px) scale(.6);opacity:0}100%{transform:none;opacity:1}}
+.pop-in{animation:popIn .55s cubic-bezier(.3,1.7,.5,1) both;transform-box:fill-box;transform-origin:center}
+@keyframes popIn{0%{transform:scale(0);opacity:0}100%{transform:scale(1);opacity:1}}
+.float-up{animation:floatUp 1.8s ease-out both;transform-box:fill-box;transform-origin:center}
+@keyframes floatUp{0%{transform:translateY(10px) scale(.4);opacity:0}25%{opacity:1;transform:translateY(0) scale(1.1)}100%{transform:translateY(-70px) scale(1);opacity:0}}
+.drive-in{animation:driveIn 1.4s cubic-bezier(.2,.8,.3,1) both}
+@keyframes driveIn{from{transform:translateX(420px)}to{transform:none}}
+.siren{animation:siren .5s steps(2) infinite}
+@keyframes siren{50%{fill:#2F6BFF}}
+.waves path{animation:waves 1s ease-out infinite;opacity:0}
+.waves path:nth-child(2){animation-delay:.25s}.waves path:nth-child(3){animation-delay:.5s}
+@keyframes waves{0%{opacity:0}30%{opacity:1}100%{opacity:0}}
+.draw{stroke-dasharray:900;stroke-dashoffset:900;animation:draw 1.6s ease-out forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.fly-off{animation:flyOff 1.1s ease-in forwards;transform-box:fill-box}
+@keyframes flyOff{0%{transform:none}40%{transform:translate(30px,-60px) rotate(180deg)}100%{transform:translate(90px,40px) rotate(360deg);opacity:0}}
+.spray{animation:spray 1.2s ease-out forwards;transform-box:fill-box;transform-origin:left center}
+@keyframes spray{0%{transform:scale(.2);opacity:0}30%{opacity:.9}100%{transform:scale(1.5);opacity:0}}
+.pushing .press{transform:translateY(7px)}
+.seize{animation:seize .14s linear infinite}
+@keyframes seize{0%{transform:translate(0,0)}25%{transform:translate(2px,-2px)}50%{transform:translate(-2px,1px)}75%{transform:translate(1px,2px)}}
+.spurt{stroke-dasharray:8 10;animation:flow .3s linear infinite}
+.drift{animation:driftArm 2s ease-in-out infinite;transform-box:fill-box;transform-origin:right center}
+@keyframes driftArm{50%{transform:rotate(-3deg)}}
+.press{transition:transform .07s}
+
+.zone rect,.zone circle{fill:rgba(255,199,44,.10);stroke:#FFC72C;stroke-width:3;stroke-dasharray:9 7;transition:fill .15s}
+.zone text{font-family:var(--display);font-weight:800;font-size:20px;fill:#14211B;paint-order:stroke;stroke:#FFC72C;stroke-width:7px;stroke-linejoin:round}
+.zone{cursor:pointer;outline:none}
+.dragging .zone rect,.dragging .zone circle,.armed .zone rect,.armed .zone circle{fill:rgba(255,199,44,.28);animation:zpulse 1s infinite;stroke-dasharray:none}
+.zone.hot rect,.zone.hot circle,.zone:focus-visible rect,.zone:focus-visible circle{fill:rgba(255,199,44,.55)}
+@keyframes zpulse{50%{stroke-width:6}}
+
+.bubble{display:flex;gap:12px;align-items:flex-start;padding:14px 16px 4px}
+.bubble .face{width:50px;height:50px;flex:none;border-radius:50%;overflow:hidden}
+.bubble p{margin:0;background:var(--paper);border-radius:4px 16px 16px 16px;padding:10px 14px;font-size:18px;flex:1}
+.bubble p b{display:block;font-family:var(--display);font-size:22px;color:var(--green)}
+.bubble .speak{background:none;border:0;font-size:20px;padding:6px;opacity:.7}
+.tray-label{padding:8px 16px 0;color:var(--muted);font-size:14px}
+.tray{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;padding:10px 16px 18px}
+.card{display:flex;gap:12px;align-items:center;text-align:left;background:var(--surface);border:2px solid var(--line);border-radius:14px;padding:12px 14px;touch-action:none;user-select:none;-webkit-user-select:none;box-shadow:0 4px 0 var(--line);transition:transform .12s,border-color .12s;animation:cardIn .45s cubic-bezier(.3,1.5,.5,1) both}
+.card:nth-child(2){animation-delay:.07s}.card:nth-child(3){animation-delay:.14s}
+@keyframes cardIn{from{transform:translateY(24px);opacity:0}}
+.card .em{font-size:34px;line-height:1;flex:none;width:44px;height:44px;display:grid;place-items:center;background:var(--paper);border-radius:12px}
+.card span{font-size:15px;font-weight:700;line-height:1.25}
+.card:hover:not([disabled]){border-color:var(--green);transform:translateY(-3px)}
+.card.selected{border-color:var(--yellow);background:rgba(255,199,44,.16)}
+.card.used{opacity:.35}
+.card[disabled]{cursor:default}
+.ghost{position:fixed;z-index:80;pointer-events:none;transform:translate(-50%,-50%) rotate(-4deg) scale(1.06);box-shadow:0 16px 30px rgba(0,0,0,.3);animation:none}
+
+.feedback{margin:0 16px 18px;padding:16px 18px;border-radius:16px;animation:fbIn .4s cubic-bezier(.3,1.4,.5,1)}
+@keyframes fbIn{from{transform:translateY(16px);opacity:0}}
+.feedback.good{background:var(--good-bg)}
+.feedback.bad{background:var(--bad-bg)}
+.feedback h3{font-size:26px;margin-bottom:4px}
+.feedback .pts{font-family:var(--display);font-size:26px;float:right;color:var(--green);font-weight:800}
+.feedback p{margin:0}
+.fb-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.btn{border:0;border-radius:12px;padding:11px 20px;font-weight:700}
+.btn.dark{background:var(--ink);color:var(--paper)}
+.btn.ghosty{background:transparent;border:2px solid var(--ink)}
+.btn.coach{background:var(--green);color:#fff}
+
+/* rhythm */
+.rhythm{padding:6px 16px 20px;text-align:center}
+.rhythm-top{display:flex;justify-content:center;gap:28px;align-items:end;flex-wrap:wrap}
+.bpm{font-family:var(--display);font-size:52px;font-weight:800;line-height:1}
+.bpm small{display:block;font-size:15px;color:var(--muted);font-weight:600;font-family:var(--body)}
+.gauge{position:relative;height:30px;background:var(--line);border-radius:999px;margin:12px auto 4px;max-width:480px;overflow:hidden}
+.gauge .zn{position:absolute;top:0;bottom:0;left:40%;width:20%;background:var(--good-bg);border-left:3px solid var(--green);border-right:3px solid var(--green)}
+.gauge .needle{position:absolute;top:3px;bottom:3px;width:6px;border-radius:3px;background:var(--ink);left:0;transition:left .15s}
+.gauge-labels{display:flex;justify-content:space-between;max-width:480px;margin:0 auto;font-size:13px;color:var(--muted)}
+.push-wrap{position:relative;width:150px;height:150px;margin:16px auto 6px}
+.push-wrap .beat{position:absolute;inset:0;border-radius:50%;border:4px solid var(--red);opacity:0}
+.push-wrap .beat.go{animation:beatRing .5s ease-out}
+@keyframes beatRing{0%{transform:scale(1);opacity:.8}100%{transform:scale(1.35);opacity:0}}
+.push-btn{position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ff5a6e,#D7263D 60%,#a3162a);color:#fff;border:0;font-family:var(--display);font-size:34px;font-weight:800;box-shadow:0 8px 0 #7d0f20,0 14px 24px rgba(215,38,61,.4);touch-action:manipulation;user-select:none}
+.push-btn.push{transform:translateY(6px);box-shadow:0 2px 0 #7d0f20}
+.push-btn[disabled]{opacity:.55}
+.rh-opts{display:flex;gap:12px;justify-content:center;align-items:center;color:var(--muted);font-size:14px;flex-wrap:wrap}
+.toggle{display:inline-flex;gap:8px;align-items:center;cursor:pointer}
+
+/* modals */
+.modal{position:fixed;inset:0;z-index:60;display:grid;place-items:center;padding:16px;background:rgba(6,20,14,.6);backdrop-filter:blur(4px);animation:fade .25s}
+@keyframes fade{from{opacity:0}}
+.modal .box{background:var(--surface);border-radius:24px;max-width:640px;width:100%;max-height:calc(100% - 20px);overflow:auto;padding:24px;box-shadow:0 30px 60px rgba(0,0,0,.35);animation:boxIn .45s cubic-bezier(.3,1.4,.5,1)}
+@keyframes boxIn{from{transform:translateY(30px) scale(.96);opacity:0}}
+.modal h2{font-size:40px;font-weight:800}
+.modal .x{float:right;background:var(--paper);border:0;border-radius:10px;width:38px;height:38px;font-size:18px}
+.stars{display:flex;gap:10px;justify-content:center;margin:12px 0}
+.stars svg{width:70px;height:70px}
+.stars svg.on{animation:starIn .6s cubic-bezier(.3,1.8,.5,1) both}
+@keyframes starIn{0%{transform:scale(0) rotate(-60deg)}100%{transform:none}}
+.done-top{text-align:center}
+.done-top .score{font-family:var(--display);font-size:56px;font-weight:800;color:var(--green)}
+.review{display:grid;gap:8px;margin-top:12px}
+.review div{padding:10px 12px;border-radius:12px;font-size:15px}
+.review .ok{background:var(--good-bg)}.review .no{background:var(--bad-bg)}
+.new-unlocks{display:grid;gap:8px;margin-top:12px}
+.unlock{display:flex;gap:12px;align-items:center;padding:10px 12px;border-radius:12px;background:rgba(255,199,44,.18);animation:boxIn .5s both}
+.unlock .ic{font-size:30px}
+.grid-items{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-top:14px}
+.item{background:var(--paper);border:2px solid var(--line);border-radius:16px;padding:12px;text-align:center}
+.item.on{border-color:var(--green);box-shadow:0 0 0 3px rgba(0,117,74,.2)}
+.item.locked{opacity:.55}
+.item svg{width:100%;height:130px}
+.item h3{font-size:20px}
+.item p{margin:2px 0 0;font-size:13px;color:var(--muted)}
+.badge-ic{font-size:44px;width:74px;height:74px;margin:4px auto;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#FFE08A,#FFC72C);box-shadow:inset 0 -4px 0 rgba(0,0,0,.12)}
+.item.locked .badge-ic{background:var(--line);filter:grayscale(1)}
+.toast-wrap{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:90;display:grid;gap:8px;width:min(420px,calc(100% - 24px))}
+.toast{display:flex;gap:12px;align-items:center;background:var(--deep);color:#fff;border-radius:16px;padding:12px 16px;box-shadow:0 14px 30px rgba(0,0,0,.3);animation:toastIn .5s cubic-bezier(.3,1.5,.5,1)}
+.toast .ic{font-size:30px}
+.toast b{font-family:var(--display);font-size:20px;display:block;color:var(--yellow)}
+@keyframes toastIn{from{transform:translateY(40px);opacity:0}}
+.pop{position:fixed;left:50%;top:36%;transform:translate(-50%,-50%);font-family:var(--display);font-size:64px;font-weight:800;color:#fff;-webkit-text-stroke:2px #00754A;text-shadow:0 5px 0 #00754A;pointer-events:none;animation:pop 1s ease-out forwards;z-index:70}
+@keyframes pop{0%{opacity:0;transform:translate(-50%,-30%) scale(.6)}25%{opacity:1;transform:translate(-50%,-50%) scale(1.15)}100%{opacity:0;transform:translate(-50%,-110%)}}
+.settings-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+.settings-row p{margin:0;color:var(--muted);font-size:14px}
+.switch{appearance:none;width:52px;height:30px;border-radius:999px;background:var(--line);position:relative;cursor:pointer;flex:none;transition:background .2s}
+.switch::after{content:"";position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff;transition:transform .2s;box-shadow:0 2px 4px rgba(0,0,0,.2)}
+.switch:checked{background:var(--green)}
+.switch:checked::after{transform:translateX(22px)}
+
+/* chat */
+.fab{position:fixed;right:18px;bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:40;display:flex;align-items:center;gap:10px;background:var(--green);color:#fff;border:0;border-radius:999px;padding:10px 18px 10px 10px;font-family:var(--display);font-size:22px;font-weight:800;box-shadow:0 12px 28px rgba(0,117,74,.45)}
+.fab .av{width:40px;height:40px;border-radius:50%;background:#fff;display:grid;place-items:center}
+.fab .av svg{width:32px;height:32px}
+@media (max-width:640px){.fab{padding:6px}.fab .lbl{display:none}.stage-head h2{font-size:24px}}
+.chat{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));top:calc(16px + env(safe-area-inset-top,0px));width:min(420px,calc(100% - 32px));z-index:65;background:var(--surface);border-radius:22px;box-shadow:0 30px 60px rgba(0,0,0,.35);display:flex;flex-direction:column;overflow:hidden;animation:chatIn .4s cubic-bezier(.3,1.3,.5,1);border:2px solid var(--line)}
+@keyframes chatIn{from{transform:translateY(30px) scale(.97);opacity:0}}
+.chat-head{display:flex;gap:12px;align-items:center;padding:14px 16px;background:var(--deep);color:#fff}
+.chat-head .av{width:44px;height:44px;border-radius:50%;background:#fff;display:grid;place-items:center;flex:none}
+.chat-head .av svg{width:36px;height:36px}
+.chat-head h3{font-size:24px}
+.chat-head small{opacity:.8;font-size:12px;display:block}
+.chat-head .grow{flex:1}
+.chat-head button{background:rgba(255,255,255,.12);border:0;color:#fff;border-radius:10px;width:36px;height:36px}
+.chat-body{flex:1;overflow:auto;padding:16px;display:flex;flex-direction:column;gap:10px}
+.msg{max-width:88%;padding:10px 14px;border-radius:16px;font-size:15.5px;white-space:pre-wrap;animation:msgIn .3s ease}
+@keyframes msgIn{from{transform:translateY(8px);opacity:0}}
+.msg.bot{background:var(--paper);border-top-left-radius:4px;align-self:flex-start}
+.msg.me{background:var(--green);color:#fff;border-top-right-radius:4px;align-self:flex-end}
+.msg.alert{background:#D7263D;color:#fff;align-self:stretch;max-width:100%;font-weight:700;border-radius:12px}
+.typing span{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--muted);margin:0 2px;animation:typ 1s infinite}
+.typing span:nth-child(2){animation-delay:.15s}.typing span:nth-child(3){animation-delay:.3s}
+@keyframes typ{50%{transform:translateY(-5px);opacity:.4}}
+.chips-row{display:flex;gap:8px;overflow-x:auto;padding:0 16px 10px;scrollbar-width:none}
+.chips-row button{flex:none;background:var(--paper);border:1.5px solid var(--line);border-radius:999px;padding:7px 12px;font-size:13.5px}
+.chat-input{display:flex;gap:8px;padding:10px 12px 12px;border-top:1px solid var(--line)}
+.chat-input textarea{flex:1;resize:none;border:2px solid var(--line);border-radius:14px;padding:10px 12px;font:inherit;font-size:15.5px;background:var(--paper);color:var(--ink);max-height:120px}
+.chat-input button{background:var(--green);color:#fff;border:0;border-radius:14px;padding:0 16px;font-weight:700}
+.chat-foot{font-size:11.5px;color:var(--muted);padding:0 16px 10px}
+.src-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:10px 0}
+.src-row button{background:var(--paper);border:2px solid var(--line);border-radius:999px;padding:8px 14px;font-weight:700;font-size:14px}
+.src-row button.on{border-color:var(--green);background:var(--good-bg)}
+.sense{position:relative;display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:stretch;max-width:520px;margin:6px auto;background:var(--paper);border-radius:14px;padding:8px}
+.sense video{width:140px;height:105px;object-fit:cover;border-radius:10px;transform:scaleX(-1);background:#000}
+.sense canvas{width:100%;height:105px;border-radius:10px;background:var(--surface)}
+.sense video.hidden+canvas{grid-column:1/-1}
+.sense-msg{font-size:14px;color:var(--muted);max-width:520px;margin:4px auto}
+.lab-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:10px 0;text-align:center}
+.lab-stats div{background:var(--paper);border-radius:12px;padding:8px 4px}
+.lab-stats b{display:block;font-family:var(--display);font-size:34px;line-height:1}
+.lab-stats small{font-size:12px;color:var(--muted)}
+.lab-coach{text-align:center;font-weight:700;min-height:2.6em;margin:6px 0}
+@media (max-width:520px){.lab-stats{grid-template-columns:repeat(2,1fr)}}
+.note{margin-top:22px;font-size:13.5px;color:var(--muted);border-left:4px solid var(--yellow);padding-left:12px;max-width:70ch}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="bar">
+    <div class="brand"><svg viewBox="0 0 44 22" aria-hidden="true"><path d="M1 12 H12 L15 12 L18 3 L23 20 L27 8 L29 12 H43"/></svg><span>Truman on Call</span></div>
+    <div class="grow"></div>
+    <div class="chip" id="barStars" title="Stars earned">⭐ <span id="starCount">0</span></div>
+    <div class="chip hidden" id="barScore"><span id="score">0</span> <small>pts</small></div>
+    <div class="chip hidden" id="barStreak">🔥 <span id="streak">0</span></div>
+    <div class="hearts hidden" id="hearts" aria-label="Lives"></div>
+    <button class="icon-btn" id="soundBtn" aria-label="Sound on">🔊</button>
+    <button class="icon-btn" id="settingsBtn" aria-label="Settings">⚙️</button>
+    <button class="icon-btn hidden" id="mapBtn" aria-label="Back to map">🗺️</button>
+  </header>
+
+  <!-- TITLE -->
+  <section id="title">
+    <div class="title-screen">
+      <svg class="ecg-bg" viewBox="0 0 1000 120" preserveAspectRatio="none" aria-hidden="true"><path d="M0 60 H300 L320 60 L335 15 L355 110 L372 35 L385 60 H600 L612 48 L624 60 H1000"/></svg>
+      <div class="copy">
+        <h1>Truman<span>on Call</span></h1>
+        <p class="lede">Ten emergencies across Mizzou. One Tiger who knows what to do. Seconds to make the right call.</p>
+        <div class="facts">
+          <div class="fact"><b>9 in 10</b><span>people who go into cardiac arrest outside a hospital in the US don't survive.</span></div>
+          <div class="fact"><b>2–3×</b><span>higher survival when a bystander starts CPR right away.</span></div>
+          <div class="fact"><b>6 min</b><span>is all it takes to learn the moves that close that gap. Let's play.</span></div>
+        </div>
+        <button class="cta" id="startBtn">Start your shift</button>
+      </div>
+      <div class="title-art" id="titleArt"></div>
+    </div>
+  </section>
+
+  <!-- MAP -->
+  <section id="map" class="hidden">
+    <div class="map-head">
+      <div><h2>Mizzou campus map</h2><p>Each spot is an emergency. Clear one to unlock the next.</p></div>
+      <div class="progress"><div class="track"><div class="fill" id="progFill"></div></div><small id="progText"></small></div>
+    </div>
+    <div class="map-card" id="mapCard"></div>
+    <div class="side-cards">
+      <button class="side-card" id="labBtn"><div class="big">🫳</div><div><h3>CPR Lab</h3><p>Practice on a real pillow. Your phone, webcam or a sensor measures you.</p></div></button>
+      <button class="side-card" id="wardrobeBtn"><div class="big">🧥</div><div><h3>Truman's wardrobe</h3><p id="wardText">Earn stars to unlock outfits.</p></div></button>
+      <button class="side-card" id="badgesBtn"><div class="big">🏅</div><div><h3>Badges</h3><p id="badgeText"></p></div></button>
+      <button class="side-card hidden" id="insightsBtn"><div class="big">📈</div><div><h3>Live insights</h3><p>Leaderboard and the myths players fall for most.</p></div></button>
+      <button class="side-card" id="coachCard"><div class="big">💬</div><div><h3>Ask Coach Pulse</h3><p>An AI first aid coach for any "but why?" question.</p></div></button>
+    </div>
+    <p class="note">A practice game, not a certification. Content follows the 2025 American Heart Association guidelines and Red Cross first aid training. In a real emergency, call your local emergency number (911 in the US), and take a hands-on course to practice CPR on a manikin.</p>
+  </section>
+
+  <!-- PLAY -->
+  <section id="play" class="hidden">
+    <div class="stage">
+      <div class="stage-head"><h2 id="sTitle"></h2><div class="steps-dots" id="dots"></div></div>
+      <div class="timer" id="timer"><i id="timerBar"></i></div>
+      <div class="scene-wrap" id="sceneWrap"><div id="sceneHost"></div><canvas id="fx"></canvas><div class="vignette" id="vignette"></div><div class="white-flash" id="wflash"></div></div>
+      <div class="bubble"><div class="face" id="face"></div><p id="bubble"></p><button class="speak" id="speakBtn" aria-label="Read aloud">🔈</button></div>
+      <div id="trayBox">
+        <div class="tray-label">Drag an action onto a glowing spot in the picture, or tap an action, then tap the spot.</div>
+        <div class="tray" id="tray"></div>
+      </div>
+      <div class="rhythm hidden" id="rhythm">
+        <div class="rhythm-top">
+          <div class="bpm"><span id="bpm">--</span><small>per minute</small></div>
+          <div class="bpm"><span id="cprCount">0</span><small>of 30 compressions</small></div>
+        </div>
+        <div class="gauge"><div class="zn"></div><div class="needle" id="needle"></div></div>
+        <div class="gauge-labels"><span>60</span><span>Target 100–120</span><span>160</span></div>
+        <div id="rhSrcHost"></div>
+        <div class="sense hidden" id="rhPanel"><video id="rhVid" class="hidden" playsinline muted></video><canvas id="rhWave"></canvas></div>
+        <p class="sense-msg" id="rhMsg"></p>
+        <div class="push-wrap"><div class="beat" id="beatRing"></div><button class="push-btn" id="pushBtn">PUSH</button></div>
+        <div class="rh-opts"><label class="toggle"><input type="checkbox" class="switch" id="metroToggle" checked> Guide beat</label><span>Tap the button, the picture, or press Space</span></div>
+      </div>
+      <div class="feedback hidden" id="feedback"></div>
+    </div>
+  </section>
+</div>
+
+<button class="fab" id="fab"><span class="av" id="fabAv"></span><span class="lbl">Ask Coach</span></button>
+
+<div class="chat hidden" id="chat" role="dialog" aria-label="Coach Pulse chat">
+  <div class="chat-head"><div class="av" id="chatAv"></div><div class="grow"><h3>Coach Pulse</h3><small id="chatMode">AI first aid coach</small></div><button id="chatClose" aria-label="Close chat">✕</button></div>
+  <div class="chat-body" id="chatBody" aria-live="polite"></div>
+  <div class="chips-row" id="chips"></div>
+  <div class="chat-input"><textarea id="chatText" rows="1" placeholder="Ask anything about first aid…"></textarea><button id="chatSend">Send</button></div>
+  <div class="chat-foot">For learning only. If someone needs help right now, call 911.</div>
+</div>
+
+<div id="modalHost"></div>
+<div class="toast-wrap" id="toasts"></div>
+<script>
+/* =========================================================
+   Truman on Call — prototype
+   Sections: storage · sound · illustration kit · levels ·
+   game engine · map/wardrobe/badges · Coach Pulse chat
+   ========================================================= */
+const $=id=>document.getElementById(id);
+const REDUCED=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ---------- storage ---------- */
+const DEF={stars:{},best:{},badges:[],outfit:'responder',sound:true,voice:false,demo:false,seenOutfits:['responder']};
+let P;
+try{P={...DEF,...JSON.parse(localStorage.getItem('maya-progress')||'{}')}}catch(e){P={...DEF}}
+function save(){try{localStorage.setItem('maya-progress',JSON.stringify(P))}catch(e){}}
+
+/* ---------- sound (Web Audio, no files) ---------- */
+let AC=null;
+function ac(){if(!AC){try{AC=new (window.AudioContext||window.webkitAudioContext)()}catch(e){}}if(AC&&AC.state==='suspended')AC.resume();return AC}
+function tone(f,d=.15,type='sine',v=.18,when=0,slide=0){
+  if(!P.sound)return;const a=ac();if(!a)return;const t=a.currentTime+when;
+  const o=a.createOscillator(),g=a.createGain();o.type=type;o.frequency.setValueAtTime(f,t);
+  if(slide)o.frequency.exponentialRampToValueAtTime(Math.max(40,f+slide),t+d);
+  g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+.01);g.gain.exponentialRampToValueAtTime(.001,t+d);
+  o.connect(g).connect(a.destination);o.start(t);o.stop(t+d+.02);
+}
+function noise(d=.12,v=.2,freq=900,when=0){
+  if(!P.sound)return;const a=ac();if(!a)return;const t=a.currentTime+when;
+  const b=a.createBuffer(1,a.sampleRate*d,a.sampleRate),ch=b.getChannelData(0);for(let i=0;i<ch.length;i++)ch[i]=(Math.random()*2-1)*(1-i/ch.length);
+  const s=a.createBufferSource();s.buffer=b;const f=a.createBiquadFilter();f.type='lowpass';f.frequency.value=freq;const g=a.createGain();g.gain.value=v;
+  s.connect(f).connect(g).connect(a.destination);s.start(t);
+}
+const SFX={
+  click:()=>tone(660,.06,'triangle',.08),
+  pick:()=>tone(520,.08,'triangle',.1,0,200),
+  drop:()=>{noise(.1,.25,500);tone(180,.12,'sine',.2,0,-80)},
+  good:()=>{[523,659,784,1047].forEach((f,i)=>tone(f,.22,'triangle',.14,i*.07))},
+  bad:()=>{tone(220,.28,'sawtooth',.1,0,-90);tone(165,.32,'square',.06,.05,-60)},
+  star:(i=0)=>{tone(880+i*220,.3,'triangle',.14);tone(1320+i*220,.25,'sine',.08,.05)},
+  fanfare:()=>{[523,659,784,659,784,1047].forEach((f,i)=>tone(f,.25,'triangle',.13,i*.11))},
+  tick:(acc)=>tone(acc?1500:1100,.035,'square',.07),
+  beat:()=>{tone(70,.12,'sine',.35,0,-20);tone(60,.12,'sine',.28,.14,-20)},
+  push:()=>{noise(.05,.18,300);tone(120,.06,'sine',.15)},
+  whoosh:()=>noise(.35,.12,2500),
+  siren:()=>{for(let i=0;i<4;i++){tone(700,.28,'triangle',.06,i*.56,250);tone(950,.28,'triangle',.06,i*.56+.28,-250)}},
+  zap:()=>{noise(.3,.35,4000);tone(90,.4,'sawtooth',.12,0,300)},
+  unlock:()=>{[784,988,1175,1568].forEach((f,i)=>tone(f,.18,'sine',.12,i*.06))}
+};
+let voiceAudio=null;
+function speak(text){
+  if(!P.voice)return;
+  if(window.SERVER&&SERVER.voice){const t=text.replace(/<[^>]+>/g,'');
+    fetch('/api/voice',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text:t})})
+      .then(r=>{if(!r.ok)throw 0;return r.blob()}).then(b=>{if(voiceAudio)voiceAudio.pause();voiceAudio=new Audio(URL.createObjectURL(b));voiceAudio.play().catch(()=>{})})
+      .catch(()=>{SERVER.voice=false;speak(text)});return}
+  if(!('speechSynthesis' in window))return;
+  try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text.replace(/<[^>]+>/g,''));u.rate=1.05;u.pitch=1;
+    const v=speechSynthesis.getVoices().find(v=>/male|daniel|alex|david|guy|fred/i.test(v.name));if(v)u.voice=v;speechSynthesis.speak(u)}catch(e){}
+}
+
+/* ---------- illustration kit ---------- */
+const C={maya:'#D9A37A',hair:'#2B1A12',blood:'#B3122E',skinA:'#C68A5E',skinB:'#F1C7A3',skinC:'#8D5A3B'};
+const OUTFITS=[
+  {id:'responder',name:'Gold responder jacket',need:0,jacket:'#F1B82D',cross:'#1E1E1E',pants:'#2F3E4F',note:'Truman\'s first-day gear'},
+  {id:'tiger',name:'Tiger spirit hoodie',need:3,jacket:'#1E1E1E',stripes:'#F1B82D',cross:'#F1B82D',pants:'#3a3a3a',note:'Black and gold, for game day'},
+  {id:'lifeguard',name:'Lifeguard red',need:8,jacket:'#D7263D',cross:'#FFFFFF',pants:'#1E2A38',cap:'#D7263D',note:'Whistle not included'},
+  {id:'paramedic',name:'Paramedic uniform',need:14,jacket:'#1F3B63',reflect:'#C8E64B',cross:'#FFFFFF',pants:'#1F3B63',note:'Hi-vis stripes for night calls'},
+  {id:'scrubs',name:'Hospital scrubs',need:20,jacket:'#2A9D8F',cross:'#FFFFFF',pants:'#2A9D8F',steth:true,note:'With a stethoscope'},
+  {id:'hero',name:'Homecoming hero cape',need:30,jacket:'#6B3FA0',cross:'#FFC72C',pants:'#2F2248',cape:'#FFC72C',note:'Earn every star on campus'}
+];
+function outfit(){return OUTFITS.find(o=>o.id===P.outfit)||OUTFITS[0]}
+
+function mayaSVG(m,o=outfit()){
+  const x=m.x,k=m.kneel,hy=k?262:195,top=hy+22,h=k?72:80;
+  const [ax,ay]=m.hand||[x+26,top+64];
+  let s=`<g id="mayaG"><ellipse cx="${x}" cy="382" rx="${k?44:34}" ry="7" fill="#000" opacity=".12"/><g class="bob"><g class="press">`;
+  if(o.cape)s+=`<path d="M${x-22} ${top+6} L${x-44} ${top+h+30} L${x+10} ${top+h+20} L${x+16} ${top+8}z" fill="${o.cape}" opacity=".95"/>`;
+  if(k)s+=`<path d="M${x-6} ${top+h-10} L${x+20} 372 L${x-34} 372" stroke="${o.pants}" stroke-width="20" fill="none" stroke-linejoin="round" stroke-linecap="round"/><ellipse cx="${x-38}" cy="374" rx="10" ry="6" fill="#20262d"/>`;
+  else s+=`<rect x="${x-16}" y="${top+70}" width="13" height="${380-top-70}" rx="6" fill="${o.pants}"/><rect x="${x+3}" y="${top+70}" width="13" height="${380-top-70}" rx="6" fill="${o.pants}"/><ellipse cx="${x-6}" cy="380" rx="14" ry="6" fill="#20262d"/><ellipse cx="${x+14}" cy="380" rx="14" ry="6" fill="#20262d"/>`;
+  s+=`<rect x="${x-24}" y="${top}" width="48" height="${h}" rx="16" fill="${o.jacket}"/>`;
+  if(o.stripes)s+=`<path d="M${x-24} ${top+30} h48 M${x-24} ${top+44} h48" stroke="${o.stripes}" stroke-width="5"/>`;
+  if(o.reflect)s+=`<path d="M${x-24} ${top+52} h48" stroke="${o.reflect}" stroke-width="7"/><path d="M${x-24} ${top+52} h48" stroke="#fff" stroke-width="1.5" opacity=".8"/>`;
+  s+=`<rect x="${x-3}" y="${top+14}" width="6" height="18" fill="${o.cross}"/><rect x="${x-9}" y="${top+20}" width="18" height="6" fill="${o.cross}"/>`;
+  if(o.steth)s+=`<path d="M${x-10} ${top+2} q-4 26 10 30 q14 -4 10 -30" stroke="#333" stroke-width="2.5" fill="none"/><circle cx="${x}" cy="${top+34}" r="4" fill="#999" stroke="#333"/>`;
+  s+=`<path d="M${x+14} ${top+14} L${ax} ${ay}" stroke="${o.jacket}" stroke-width="13" stroke-linecap="round"/><circle cx="${ax}" cy="${ay}" r="7" fill="${C.maya}"/>`;
+  s+=`<circle cx="${x}" cy="${hy}" r="22" fill="${C.maya}"/>`;
+  s+=`<path d="M${x-23} ${hy+2} a23 23 0 0 1 46 -4 q-12 -9 -24 -5 q-12 -3 -22 9z" fill="${C.hair}"/>`;
+  if(o.cap)s+=`<path d="M${x-22} ${hy-6} a22 18 0 0 1 44 0z" fill="${o.cap}"/><path d="M${x+14} ${hy-7} h20" stroke="${o.cap}" stroke-width="5" stroke-linecap="round"/>`;
+  s+=`<ellipse class="eye" cx="${x+10}" cy="${hy+1}" rx="2.6" ry="2.8" fill="#1b1b1b"/><circle cx="${x+15}" cy="${hy+8}" r="3.5" fill="#E88B7A" opacity=".5"/><path d="M${x+7} ${hy+11} q4 3 8 0" stroke="#7a3b2a" stroke-width="2" fill="none" stroke-linecap="round"/>`;
+  return s+'</g></g></g>';
+}
+
+function face(p,hx,hy,dir){
+  let s='';const skin=p.pale?'#B9C4C8':p.skin;
+  s+=`<circle cx="${hx}" cy="${hy}" r="23" fill="${skin}"/>`;
+  s+=`<path d="M${hx-23} ${hy-2} a23 23 0 0 1 46 0 q-23 -12 -46 0z" fill="${p.hair}"/>`;
+  if(p.longHair)s+=`<path d="M${hx-dir*14} ${hy-18} q${-dir*20} 10 ${-dir*14} 44 l${dir*8} -2 q${-dir*2} -24 ${dir*10} -38z" fill="${p.hair}"/>`;
+  s+=`<path d="M${hx+dir*21} ${hy-4} l${dir*8} 9 l${-dir*8} 2z" fill="${skin}"/>`;
+  if(p.eyesClosed)s+=`<path d="M${hx+dir*7} ${hy-3} h${dir*7}" stroke="#1b1b1b" stroke-width="2.5" stroke-linecap="round"/>`;
+  else s+=`<ellipse class="eye" cx="${hx+dir*10}" cy="${hy-3}" rx="2.6" ry="2.8" fill="#1b1b1b"/>`;
+  if(p.hives)s+=[[-6,-10],[4,-14],[-12,4],[8,6],[-2,12],[12,-4],[-16,-6]].map(([a,b])=>`<circle cx="${hx+a}" cy="${hy+b}" r="2.6" fill="#E0474C" opacity=".75"/>`).join('');
+  if(p.swollen)s+=`<ellipse cx="${hx+dir*13}" cy="${hy+11}" rx="7" ry="5" fill="#C2414F"/>`;
+  else if(p.distress)s+=`<ellipse cx="${hx+dir*12}" cy="${hy+11}" rx="4" ry="3" fill="#5a1f1f"/>`;
+  else if(p.droop)s+=`<path d="M${hx+dir*6} ${hy+8} q${dir*6} 2 ${dir*12} 9" stroke="#5a2a1f" stroke-width="2.4" fill="none" stroke-linecap="round"/>`;
+  else s+=`<path d="M${hx+dir*8} ${hy+11} q${dir*4} ${p.sad?-3:3} ${dir*8} 0" stroke="${p.blueLips?'#3B5BA8':'#5a2a1f'}" stroke-width="${p.blueLips?3:2}" fill="none" stroke-linecap="round"/>`;
+  if(p.blood){const wx=hx+dir*9,wy=hy-14;
+    s+=`<ellipse cx="${wx}" cy="${wy}" rx="6" ry="3.5" fill="${C.blood}"/>`;
+    for(let i=0;i<p.blood;i++)s+=`<path d="M${wx+dir*(i*5-4)} ${wy} q${dir*2} ${14+i*6} 0 ${22+i*9}" stroke="${C.blood}" stroke-width="3.5" fill="none" stroke-linecap="round"/>`;
+    if(p.blood>1)s+=`<circle class="drip" cx="${wx-dir*4}" cy="${wy+34}" r="3" fill="${C.blood}"/>`;}
+  if(p.cloth){for(let i=0;i<p.cloth;i++){const top=i===p.cloth-1;s+=`<rect x="${hx+dir*9-14+i*3}" y="${hy-26-i*3}" width="26" height="20" rx="4" fill="${p.soaked&&!top?'#E3A0A8':p.soaked&&p.cloth===1?'#E3A0A8':'#fff'}" stroke="#bbb"/>`}
+    if(p.soaked&&p.cloth===1)s+=`<circle cx="${hx+dir*9}" cy="${hy-16}" r="7" fill="${C.blood}" opacity=".75"/>`;}
+  if(p.noseBleed)s+=`<path d="M${hx+dir*26} ${hy+6} q${dir*2} 10 0 ${p.lean?26:16}" stroke="${C.blood}" stroke-width="4" fill="none" stroke-linecap="round"/><circle class="drip" cx="${hx+dir*26}" cy="${hy+(p.lean?34:24)}" r="2.6" fill="${C.blood}"/>`;
+  if(p.pinch)s+=`<circle cx="${hx+dir*29}" cy="${hy+3}" r="8" fill="${p.skin}" stroke="#0003"/>`;
+  if(p.dizzy)s+=`<g class="pulse-soft" fill="#FFC72C" stroke="#8a6d00"><path d="M${hx-30} ${hy-34} l3 7 7 1 -5 5 1 7 -6 -3 -6 3 1 -7 -5 -5 7 -1z"/><path d="M${hx+22} ${hy-40} l3 7 7 1 -5 5 1 7 -6 -3 -6 3 1 -7 -5 -5 7 -1z"/></g>`;
+  return s;
+}
+
+function patientSVG(p){
+  const x=p.x;let s='';
+  if(p.pose==='sit'){
+    const hx=p.lean?x-16:x,hy=p.lean?278:(p.slump?284:266);
+    s+=`<ellipse cx="${x-60}" cy="380" rx="90" ry="7" fill="#000" opacity=".12"/>`;
+    s+=`<rect x="${x-132}" y="352" width="132" height="24" rx="12" fill="${p.pants}"/><ellipse cx="${x-134}" cy="366" rx="9" ry="14" fill="#20262d"/>`;
+    s+=`<rect x="${x-22}" y="290" width="44" height="78" rx="16" fill="${p.shirt}" transform="rotate(${p.lean?-10:p.slump?-14:0} ${x} 360)"/>`;
+    if(p.armsTest){
+      s+=`<path d="M${x-6} 302 L${x-80} 298" stroke="${p.shirt}" stroke-width="12" stroke-linecap="round"/><circle cx="${x-80}" cy="298" r="7" fill="${p.skin}"/>`;
+      s+=`<path class="${p.drift?'drift':''}" d="M${x+4} 308 L${x-74} ${p.drift?338:306}" stroke="${p.shirt}" stroke-width="12" stroke-linecap="round" opacity=".9"/><circle cx="${x-74}" cy="${p.drift?338:306}" r="7" fill="${p.skin}"/>`;
+    }else if(p.longArm){
+      if(p.pool)s+=`<ellipse cx="${x-110}" cy="380" rx="${22+p.pool*10}" ry="${4+p.pool}" fill="${C.blood}" opacity=".85"/>`;
+      s+=`<path d="M${x-6} 304 L${x-78} 316 L${x-150} 306" stroke="${p.shirt}" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>`;
+      s+=`<path d="M${x-78} 316 L${x-150} 306" stroke="${p.skin}" stroke-width="10" stroke-linecap="round"/><circle cx="${x-154}" cy="306" r="7" fill="${p.skin}"/>`;
+      s+=`<path d="M${x-118} 306 l12 10" stroke="${C.blood}" stroke-width="4" stroke-linecap="round"/>`;
+      if(p.spurt)s+=`<g stroke="${C.blood}" stroke-width="4" fill="none" stroke-linecap="round"><path class="spurt" d="M${x-112} 308 q-10 -40 -34 -30"/><path class="spurt" style="animation-delay:.15s" d="M${x-110} 310 q-4 -28 -22 -34"/></g><circle class="drip" cx="${x-112}" cy="322" r="3" fill="${C.blood}"/>`;
+      if(p.ooze)s+=`<circle class="drip" cx="${x-112}" cy="322" r="2.6" fill="${C.blood}"/>`;
+      if(p.tq)s+=`<g class="${p.tqNew?'pop-in':''}"><rect x="${x-58}" y="300" width="14" height="30" rx="4" fill="#1E1E1E" transform="rotate(-10 ${x-51} 315)"/><rect x="${x-64}" y="290" width="26" height="6" rx="3" fill="#444" transform="rotate(${p.tight?30:0} ${x-51} 293)"/></g>`;
+    }else{
+      const [ax,ay]=p.hand||[x-58,350];
+      s+=`<path d="M${x-6} 304 L${ax} ${ay}" stroke="${p.shirt}" stroke-width="12" stroke-linecap="round"/><circle cx="${ax}" cy="${ay}" r="7" fill="${p.skin}"/>`;
+    }
+    s+=face(p,hx,hy,-1);
+  }else if(p.pose==='lie'){
+    const skin=p.pale?'#B9C4C8':p.skin;
+    s+=`<ellipse cx="${x+120}" cy="382" rx="150" ry="8" fill="#000" opacity=".12"/>`;
+    if(p.side){
+      s+=`<rect x="${x+128}" y="352" width="124" height="22" rx="11" fill="${p.pants}"/><path d="M${x+132} 350 L${x+190} 322 L${x+236} 350" stroke="${p.pants}" stroke-width="20" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`;
+      s+=`<rect x="${x+18}" y="330" width="116" height="46" rx="20" fill="${p.shirt}"/><path d="M${x+40} 336 L${x+10} 372" stroke="${p.shirt}" stroke-width="11" stroke-linecap="round"/>`;
+      s+=`<circle cx="${x}" cy="356" r="22" fill="${skin}"/><path d="M${x-20} 346 a22 22 0 0 1 26 -12 q-4 14 -26 12z" fill="${p.hair}"/><ellipse class="eye" cx="${x-8}" cy="358" rx="2.4" ry="2.4" fill="#1b1b1b"/><path d="M${x-14} 368 q4 2 8 0" stroke="#5a2a1f" stroke-width="2" fill="none"/>`;
+    }else{
+      s+=`<rect x="${x+128}" y="342" width="124" height="28" rx="12" fill="${p.pants}"/><ellipse cx="${x+256}" cy="346" rx="8" ry="14" fill="#20262d"/>`;
+      s+=`<rect x="${x+18}" y="332" width="116" height="44" rx="18" fill="${p.shirt}"/>`;
+      s+=`<path d="M${x+30} 372 L${x+120} 376" stroke="${p.shirt}" stroke-width="11" stroke-linecap="round"/>`;
+      s+=`<circle cx="${x}" cy="354" r="22" fill="${skin}"/><path d="M${x-22} 356 a22 22 0 0 1 8 -18 q4 16 -2 36z" fill="${p.hair}"/>`;
+      s+=`<path d="M${x+2} 332 l4 -8 l4 8z" fill="${skin}"/>`;
+      s+=p.eyesOpen?`<ellipse class="eye" cx="${x}" cy="346" rx="2.6" ry="2.6" fill="#1b1b1b"/>`:`<path d="M${x-4} 346 h8" stroke="#1b1b1b" stroke-width="2.5" stroke-linecap="round"/>`;
+      if(p.blueLips)s+=`<path d="M${x+10} 352 q3 4 0 8" stroke="#3B5BA8" stroke-width="3.5" fill="none" stroke-linecap="round"/>`;
+      if(p.pads)s+=`<rect x="${x+30}" y="330" width="22" height="16" rx="3" fill="#fff" stroke="#999"/><rect x="${x+92}" y="350" width="22" height="16" rx="3" fill="#fff" stroke="#999"/><path d="M${x+41} 332 q-70 -40 -170 0 M${x+103} 352 q-90 -30 -184 10" stroke="#333" stroke-width="2" fill="none"/>`;
+    }
+    if(p.gasp)s+=`<g class="pulse-soft"><path d="M${x+6} 290 h96 a10 10 0 0 1 10 10 v18 a10 10 0 0 1 -10 10 h-78 l-14 12 v-12 a10 10 0 0 1 -4 -10 v-18 a10 10 0 0 1 0 -10z" fill="#fff" stroke="#999"/><text x="${x+56}" y="315" text-anchor="middle" font-family="Atkinson Hyperlegible,sans-serif" font-size="15" font-style="italic" fill="#333">…gasp…</text></g>`;
+    if(p.snore)s+=`<g font-family="Barlow Condensed,sans-serif" font-weight="800" fill="#3B5BA8"><text class="zzz" x="${x+14}" y="318" font-size="20">z</text><text class="zzz" style="animation-delay:.8s" x="${x+26}" y="306" font-size="26">z</text><text class="zzz" style="animation-delay:1.6s" x="${x+40}" y="292" font-size="32">z</text></g>`;
+  }else{
+    const dir=p.dir||-1,hy=195,top=217;
+    s+=`<ellipse cx="${x}" cy="382" rx="34" ry="7" fill="#000" opacity=".12"/>`;
+    s+=`<rect x="${x-16}" y="${top+80}" width="13" height="83" rx="6" fill="${p.pants}"/><rect x="${x+3}" y="${top+80}" width="13" height="83" rx="6" fill="${p.pants}"/>`;
+    s+=`<ellipse cx="${x-10}" cy="380" rx="14" ry="6" fill="#20262d"/><ellipse cx="${x+10}" cy="380" rx="14" ry="6" fill="#20262d"/>`;
+    s+=`<rect x="${x-24}" y="${top}" width="48" height="86" rx="16" fill="${p.shirt}"/>`;
+    const [ax,ay]=p.hand||[x+dir*20,top+80];
+    s+=`<path d="M${x+dir*10} ${top+14} L${ax} ${ay}" stroke="${p.shirt}" stroke-width="12" stroke-linecap="round"/>`;
+    s+=`<circle cx="${ax}" cy="${ay}" r="${p.burn?9:7}" fill="${p.burn?'#E86A5A':p.skin}"/>`;
+    if(p.rings)s+=`<circle cx="${ax+dir*4}" cy="${ay+2}" r="4" fill="none" stroke="#E0B000" stroke-width="3"/>`;
+    if(p.blisters)s+=`<circle cx="${ax-3}" cy="${ay-3}" r="3" fill="#FFF3E0"/><circle cx="${ax+4}" cy="${ay+2}" r="2.5" fill="#FFF3E0"/>`;
+    if(p.film)s+=`<circle cx="${ax}" cy="${ay}" r="14" fill="rgba(220,240,255,.6)" stroke="#8cc"/>`;
+    if(p.throat)s+=`<path d="M${x-dir*10} ${top+14} L${x+dir*4} ${top-2}" stroke="${p.shirt}" stroke-width="12" stroke-linecap="round"/><circle cx="${x+dir*4}" cy="${top-2}" r="7" fill="${p.skin}"/><circle cx="${ax}" cy="${ay}" r="7" fill="${p.skin}"/>`;
+    s+=face(p,x,hy,dir);
+  }
+  if(p.speech){const sx=p.pose==='lie'?x:x+10,sy=p.pose==='stand'?120:190,w=p.speech.length*8.4+30;
+    s+=`<g class="pop-in"><rect x="${sx-20}" y="${sy-28}" width="${w}" height="36" rx="14" fill="#fff" stroke="#aaa"/><path d="M${sx} ${sy+8} l-6 12 l16 -12z" fill="#fff" stroke="#aaa"/><text x="${sx-5}" y="${sy-4}" font-family="Atkinson Hyperlegible,sans-serif" font-size="16" font-style="italic" fill="#333">${p.speech}</text></g>`;}
+  return s;
+}
+
+const cloud=(x,y,s,slow)=>`<g class="cloud${slow?' slow':''}" style="animation-delay:-${(x/8)|0}s"><g transform="translate(${x} ${y}) scale(${s})" fill="#fff" opacity=".9"><ellipse cx="0" cy="0" rx="34" ry="16"/><ellipse cx="24" cy="-10" rx="24" ry="18"/><ellipse cx="-22" cy="-6" rx="18" ry="13"/></g></g>`;
+const DEFS=`<defs><linearGradient id="gSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8FD0F2"/><stop offset="1" stop-color="#E4F4FB"/></linearGradient>
+<radialGradient id="gSun"><stop offset="0" stop-color="#FFF4C2"/><stop offset=".5" stop-color="#FFE08A"/><stop offset="1" stop-color="#FFE08A" stop-opacity="0"/></radialGradient>
+<linearGradient id="gGrass" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#A6D67F"/><stop offset="1" stop-color="#7DBB5E"/></linearGradient>
+<linearGradient id="gFloor" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#B98E62"/><stop offset="1" stop-color="#94693F"/></linearGradient>
+<radialGradient id="gLamp" cx=".5" cy="0" r="1"><stop offset="0" stop-color="#FFF6D8" stop-opacity=".7"/><stop offset="1" stop-color="#FFF6D8" stop-opacity="0"/></radialGradient></defs>`;
+const BG={
+  park:()=>`<rect width="800" height="450" fill="url(#gSky)"/><circle cx="690" cy="76" r="70" fill="url(#gSun)"/><circle cx="690" cy="76" r="30" fill="#FFE9A6"/>${cloud(120,70,1)}${cloud(460,50,.8,1)}${cloud(300,110,.6)}
+    <path d="M0 290 Q200 240 400 270 T800 250 V300 H0Z" fill="#8CC56B"/>
+    <rect x="80" y="200" width="14" height="100" fill="#7B5A3C"/><circle cx="87" cy="186" r="58" fill="#5E9E4E"/><circle cx="70" cy="170" r="30" fill="#6DB05B"/><rect x="200" y="226" width="12" height="80" fill="#7B5A3C"/><circle cx="206" cy="212" r="42" fill="#6DAE5B"/>
+    <rect y="290" width="800" height="160" fill="url(#gGrass)"/><path d="M0 334 L800 320 L800 410 L0 420Z" fill="#D8C8A8"/><path d="M0 334 L800 320" stroke="#c4b38f" stroke-width="3"/><path d="M0 377 L800 365" stroke="#fff" stroke-width="3" stroke-dasharray="22 16"/>`,
+  library:()=>{let s=`<rect width="800" height="450" fill="#EADCC2"/><ellipse cx="400" cy="0" rx="420" ry="220" fill="url(#gLamp)"/>`;const cols=['#B5473A','#3E6E8E','#D9A441','#5B8C5A','#7A4E9E','#C9703A'];
+    for(let i=0;i<5;i++){const x=20+i*160;s+=`<rect x="${x}" y="40" width="140" height="300" fill="#8C5F3B"/><rect x="${x}" y="40" width="140" height="10" fill="#A57447"/>`;for(let r=0;r<4;r++){s+=`<rect x="${x+8}" y="${52+r*72}" width="124" height="62" fill="#5E3B22"/>`;for(let b=0;b<9;b++)s+=`<rect x="${x+12+b*13}" y="${58+r*72+(b%3)*4}" width="11" height="${54-(b%3)*4}" rx="1.5" fill="${cols[(i+r+b)%6]}"/>`;}}
+    return s+`<rect y="340" width="800" height="110" fill="url(#gFloor)"/><ellipse cx="420" cy="372" rx="300" ry="26" fill="#7C2E3A" opacity=".55"/>`;},
+  kitchen:()=>`<rect width="800" height="450" fill="#F2E7DA"/><path d="M0 120 H800 M0 170 H800 M0 220 H800" stroke="#e2d4c3" stroke-width="2"/><rect x="330" y="50" width="130" height="100" rx="6" fill="#BFE1F2" stroke="#fff" stroke-width="7"/><path d="M395 50 V150" stroke="#fff" stroke-width="5"/>
+    <rect x="30" y="100" width="110" height="280" rx="10" fill="#DDE3E8" stroke="#b9c2c9" stroke-width="2"/><path d="M30 190 H140" stroke="#b9c2c9" stroke-width="3"/><rect x="120" y="120" width="6" height="50" rx="3" fill="#8a949b"/><text x="80" y="160" text-anchor="middle" font-size="28">❄️</text>
+    <rect x="560" y="250" width="240" height="130" fill="#6F8391"/><path d="M620 262 V372 M700 262 V372" stroke="#5d6f7b" stroke-width="2"/><rect x="552" y="242" width="248" height="12" fill="#C9D2D8"/><rect x="610" y="242" width="110" height="16" rx="4" fill="#4a5963"/>
+    <path d="M700 242 V200 q0 -14 -14 -14 h-26 v14" stroke="#9aa6ad" stroke-width="8" fill="none" stroke-linecap="round"/>
+    <rect x="740" y="212" width="40" height="32" rx="8" fill="#D7263D"/><path d="M780 220 q14 0 12 12" stroke="#D7263D" stroke-width="5" fill="none"/>
+    <rect y="380" width="800" height="70" fill="#C9B79C"/><path d="M0 380 H800" stroke="#b3a184" stroke-width="3"/>`,
+  field:()=>`<rect width="800" height="450" fill="url(#gSky)"/>${cloud(200,60,1)}${cloud(560,90,.7,1)}<path d="M0 250 Q400 220 800 250 V260 H0Z" fill="#5E9E4E"/><rect y="250" width="800" height="200" fill="#6FB35A"/><path d="M0 300 H800 M0 360 H800 M0 420 H800" stroke="#7fc16a" stroke-width="22"/>
+    <path d="M630 290 V180 H790 V290" stroke="#fff" stroke-width="7" fill="none"/><path d="M640 190 L780 280 M780 190 L640 280 M640 235 H780 M710 190 V280" stroke="#ffffff55" stroke-width="2"/>`,
+  dining:()=>`<rect width="800" height="450" fill="#E8E1F0"/><rect x="80" y="60" width="160" height="130" fill="#BFE1F2" stroke="#fff" stroke-width="8"/><path d="M160 60 V190 M80 125 H240" stroke="#fff" stroke-width="6"/>
+    <path d="M430 40 v40" stroke="#555" stroke-width="2"/><path d="M405 80 h50 l-10 18 h-30z" fill="#F1B82D"/><ellipse cx="430" cy="120" rx="120" ry="40" fill="url(#gLamp)"/>
+    <rect x="600" y="296" width="200" height="12" fill="#8C5F3B"/><rect x="615" y="308" width="10" height="72" fill="#6D4629"/><rect x="775" y="308" width="10" height="72" fill="#6D4629"/>
+    <ellipse cx="660" cy="292" rx="30" ry="6" fill="#fff"/><ellipse cx="740" cy="292" rx="30" ry="6" fill="#fff"/><circle cx="660" cy="288" r="8" fill="#D9A441"/><circle cx="740" cy="289" r="6" fill="#5B8C5A"/>
+    <rect y="380" width="800" height="70" fill="#9B7FA6"/>`,
+  quad:()=>`<rect width="800" height="450" fill="url(#gSky)"/>${cloud(160,70,1)}${cloud(520,50,.8,1)}<rect x="590" y="70" width="190" height="16" rx="4" fill="#E9E2D0"/>${[0,1,2,3,4,5].map(i=>`<rect x="${600+i*30}" y="86" width="14" height="190" rx="4" fill="#F4EEDD" stroke="#cfc6ae"/>`).join('')}<rect x="590" y="274" width="190" height="10" fill="#E9E2D0"/>
+    <path d="M0 290 Q300 250 800 285 V300 H0Z" fill="#8CC56B"/><rect y="290" width="800" height="160" fill="url(#gGrass)"/><rect x="330" y="366" width="300" height="26" rx="8" fill="#6FA0C8" opacity=".55"/>`,
+  classroom:()=>`<rect width="800" height="450" fill="#EEF0EA"/><rect x="170" y="50" width="460" height="170" rx="6" fill="#fff" stroke="#b7bfb3" stroke-width="6"/><text x="200" y="100" font-family="Barlow Condensed,sans-serif" font-size="28" fill="#3E6E8E">BIO 1010: Cells & Systems</text><path d="M200 130 q60 -30 120 0 t120 0" stroke="#D7263D" stroke-width="3" fill="none"/><circle cx="520" cy="150" r="30" fill="none" stroke="#5B8C5A" stroke-width="3"/>
+    <rect y="340" width="800" height="110" fill="#B8A58C"/><path d="M0 340 H800" stroke="#a08d74" stroke-width="3"/>`,
+  cafe:()=>`<rect width="800" height="450" fill="#F3E3D3"/><rect x="40" y="50" width="220" height="130" rx="8" fill="#2F2B28"/><text x="150" y="86" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-size="24" font-weight="800" fill="#FFC72C">MENU</text><text x="70" y="116" font-family="Atkinson Hyperlegible,sans-serif" font-size="14" fill="#eee">Latte ........ 4.50</text><text x="70" y="138" font-family="Atkinson Hyperlegible,sans-serif" font-size="14" fill="#eee">Peanut cookie . 2.75</text><text x="70" y="160" font-family="Atkinson Hyperlegible,sans-serif" font-size="14" fill="#eee">Bagel ........ 3.00</text>
+    <rect x="600" y="240" width="200" height="140" fill="#8C5F3B"/><rect x="592" y="232" width="208" height="12" fill="#C9A27A"/><rect x="640" y="196" width="28" height="36" rx="4" fill="#fff"/><path d="M668 206 q12 0 10 12" stroke="#fff" stroke-width="4" fill="none"/><circle cx="730" cy="224" r="12" fill="#C98B4A"/><circle cx="726" cy="220" r="2" fill="#6b3f1a"/><circle cx="734" cy="226" r="2" fill="#6b3f1a"/>
+    <rect y="380" width="800" height="70" fill="#A7876B"/>`,
+  lab:()=>`<rect width="800" height="450" fill="#E3E8EC"/><rect x="40" y="60" width="260" height="150" fill="#C9B38A"/>${Array.from({length:40},(_,i)=>`<circle cx="${56+(i%10)*25}" cy="${76+Math.floor(i/10)*34}" r="3" fill="#8d7753"/>`).join('')}<path d="M80 90 h40 v10 h-40z M150 120 l30 30" stroke="#555" stroke-width="5"/>
+    <rect x="620" y="200" width="180" height="16" fill="#6F8391"/><rect x="630" y="216" width="12" height="164" fill="#56666f"/><rect x="780" y="216" width="12" height="164" fill="#56666f"/><path d="M660 196 l30 -24 l20 20" stroke="#9ED1F0" stroke-width="4" fill="none"/><path d="M700 190 l14 -6 M676 194 l-8 -8" stroke="#9ED1F0" stroke-width="3"/>
+    <g><rect x="470" y="110" width="110" height="80" rx="8" fill="#D7263D"/><text x="525" y="145" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-size="17" font-weight="800" fill="#fff">STOP THE</text><text x="525" y="168" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-size="17" font-weight="800" fill="#fff">BLEED KIT</text></g>
+    <rect y="380" width="800" height="70" fill="#8A969E"/>`,
+  hall:()=>`<rect width="800" height="450" fill="#DDE4EC"/><rect y="0" width="800" height="36" fill="#C9D3DE"/>${[40,560].map(x=>`<rect x="${x}" y="90" width="110" height="250" rx="4" fill="#9C6B43"/><circle cx="${x+94}" cy="220" r="5" fill="#E6C06B"/><rect x="${x+30}" y="120" width="50" height="22" rx="4" fill="#F5F0E6"/><text x="${x+55}" y="136" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-size="16" font-weight="700" fill="#333">${x===40?'214':'216'}</text>`).join('')}
+    <rect x="200" y="110" width="120" height="84" rx="4" fill="#C79A5B"/><rect x="210" y="120" width="30" height="24" fill="#FFE08A" transform="rotate(-6 225 132)"/><rect x="250" y="126" width="34" height="26" fill="#9ED1F0" transform="rotate(4 267 139)"/><rect x="224" y="156" width="40" height="28" fill="#F4A6B7"/>
+    <g><rect x="690" y="150" width="84" height="110" rx="8" fill="#D7263D"/><rect x="700" y="160" width="64" height="58" rx="4" fill="#fff" opacity=".9"/><text x="732" y="185" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-size="15" font-weight="800" fill="#D7263D">NALOXONE</text><text x="732" y="206" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-size="15" font-weight="800" fill="#00754A">+ AED</text><text x="732" y="246" text-anchor="middle" font-size="20">💊</text></g>
+    <rect y="340" width="800" height="110" fill="#6F7F95"/><path d="M0 340 H800" stroke="#5b6a7f" stroke-width="4"/>`
+};
+const PROPS={
+  bikeDown:`<g stroke="#2d2d2d" stroke-width="4" fill="none"><circle cx="630" cy="372" r="22"/><circle cx="700" cy="366" r="22"/><path d="M630 372 L660 350 L700 366 M660 350 L650 340"/></g>`,
+  bikeComing:`<g class="pulse-soft"><g stroke="#2d2d2d" stroke-width="4" fill="none"><circle cx="720" cy="300" r="16"/><circle cx="770" cy="296" r="16"/><path d="M720 300 L745 282 L770 296"/></g><circle cx="742" cy="248" r="10" fill="#C68A5E"/><rect x="734" y="256" width="16" height="26" rx="6" fill="#D7263D"/><path d="M700 270 h-30 M705 285 h-40" stroke="#555" stroke-width="3" stroke-linecap="round"/></g>`,
+  bikeStopped:`<g><g stroke="#2d2d2d" stroke-width="4" fill="none"><circle cx="750" cy="300" r="16"/><circle cx="790" cy="296" r="16"/><path d="M750 300 L770 282 L790 296"/></g><circle cx="768" cy="248" r="10" fill="#C68A5E"/><rect x="760" y="256" width="16" height="26" rx="6" fill="#D7263D"/></g>`,
+  cones:`<g>${[640,672,704].map((x,i)=>`<g class="drop-in" style="animation-delay:${i*.12}s"><path d="M${x} 330 l10 -34 l10 34z" fill="#FF7A1A"/><rect x="${x-3}" y="328" width="26" height="6" rx="2" fill="#E0620A"/><path d="M${x+5} 314 h10" stroke="#fff" stroke-width="4"/></g>`).join('')}</g>`,
+  aed:`<g><rect x="130" y="300" width="80" height="70" rx="10" fill="#1FA36B"/><path d="M178 312 l-14 22 h12 l-6 20 l18 -26 h-12 l6 -16z" fill="#FFC72C"/><text x="170" y="364" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-weight="800" font-size="16" fill="#fff">AED</text></g>`,
+  aedIn:`<g class="drop-in"><rect x="130" y="300" width="80" height="70" rx="10" fill="#1FA36B"/><path d="M178 312 l-14 22 h12 l-6 20 l18 -26 h-12 l6 -16z" fill="#FFC72C"/><text x="170" y="364" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-weight="800" font-size="16" fill="#fff">AED</text></g>`,
+  steam:`<g><path class="steam" d="M770 200 q-8 -14 0 -26 q8 -12 0 -24" stroke="#ffffffcc" stroke-width="4" fill="none" stroke-linecap="round"/><path class="steam" style="animation-delay:.8s" d="M784 204 q-8 -14 0 -26" stroke="#ffffffcc" stroke-width="4" fill="none" stroke-linecap="round"/></g><path d="M552 244 q-40 6 -70 30" stroke="#8ec9e8" stroke-width="5" fill="none" stroke-dasharray="4 8"/>`,
+  water:`<path class="flow" d="M662 200 V246" stroke="#7fc9ee" stroke-width="10" stroke-linecap="round" opacity=".9"/><ellipse cx="662" cy="248" rx="14" ry="4" fill="#bfe6fa" class="pulse-soft"/>`,
+  clock:`<g class="pop-in"><rect x="290" y="60" width="220" height="52" rx="14" fill="#14211B"/><text x="400" y="96" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-weight="800" font-size="30" fill="#FFC72C">⏱ cooling for 20 min</text></g>`,
+  clock10:`<g class="pop-in"><rect x="290" y="60" width="220" height="52" rx="14" fill="#14211B"/><text x="400" y="96" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-weight="800" font-size="30" fill="#FFC72C">⏱ 10–15 min, steady</text></g>`,
+  ball:`<circle cx="420" cy="366" r="16" fill="#fff" stroke="#333" stroke-width="2"/><path d="M414 360 l6 -4 l6 4 l-2 7 h-8z" fill="#333"/>`,
+  tick:`<g class="pop-in" style="animation-delay:.4s"><circle cx="720" cy="80" r="44" fill="#1FA36B" stroke="#fff" stroke-width="6"/><path d="M698 80 l16 16 l28 -30" stroke="#fff" stroke-width="10" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g>`,
+  heartUp:`<g class="float-up"><path d="M540 200 l-16 -16 a9 9 0 0 1 16 -12 a9 9 0 0 1 16 12z" fill="#FF4D6D"/></g>`,
+  heartUpLie:`<g class="float-up"><path d="M430 300 l-16 -16 a9 9 0 0 1 16 -12 a9 9 0 0 1 16 12z" fill="#FF4D6D"/></g>`,
+  phone:`<g class="pop-in"><rect x="60" y="120" width="190" height="56" rx="16" fill="#fff" stroke="#00754A" stroke-width="3"/><text x="96" y="156" font-size="26">📞</text><text x="126" y="146" font-family="Barlow Condensed,sans-serif" font-weight="800" font-size="22" fill="#00754A">911 connected</text><text x="126" y="166" font-family="Atkinson Hyperlegible,sans-serif" font-size="13" fill="#51625A">Help is on the way</text></g><g class="waves" stroke="#00754A" stroke-width="3" fill="none"><path d="M256 132 q10 16 0 32"/><path d="M266 124 q16 24 0 48"/><path d="M276 116 q22 32 0 64"/></g>`,
+  ambulance:`<g class="drive-in"><rect x="560" y="300" width="200" height="74" rx="10" fill="#fff" stroke="#ccc" stroke-width="2"/><rect x="700" y="310" width="54" height="30" rx="4" fill="#9ED1F0"/><rect x="580" y="316" width="44" height="12" fill="#D7263D"/><rect x="596" y="300" width="12" height="44" fill="#D7263D"/><rect x="560" y="352" width="200" height="8" fill="#D7263D"/><rect class="siren" x="640" y="290" width="30" height="10" rx="3" fill="#D7263D"/><circle cx="600" cy="376" r="15" fill="#222"/><circle cx="720" cy="376" r="15" fill="#222"/><circle cx="600" cy="376" r="6" fill="#999"/><circle cx="720" cy="376" r="6" fill="#999"/></g>`,
+  shout:`<g class="pop-in"><rect x="200" y="110" width="170" height="44" rx="16" fill="#fff" stroke="#aaa"/><text x="285" y="139" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-weight="800" font-size="24" fill="#14211B">Are you OK?!</text></g>`,
+  shoutK:`<g class="pop-in"><rect x="330" y="160" width="190" height="44" rx="16" fill="#fff" stroke="#aaa"/><text x="425" y="189" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-weight="800" font-size="22" fill="#14211B">Hey! Wake up!</text></g>`,
+  keepCough:`<g class="pop-in"><rect x="250" y="110" width="200" height="44" rx="16" fill="#fff" stroke="#aaa"/><text x="350" y="139" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-weight="800" font-size="22" fill="#14211B">Keep coughing, hard!</text></g>`,
+  foodOut:`<g class="fly-off"><circle cx="520" cy="200" r="7" fill="#D9A441"/></g>`,
+  ringOff:`<g class="fly-off"><circle cx="666" cy="242" r="5" fill="none" stroke="#E0B000" stroke-width="3"/></g>`,
+  spray:`<g class="spray"><ellipse cx="400" cy="318" rx="30" ry="14" fill="#E7F5FF"/><ellipse cx="420" cy="310" rx="18" ry="10" fill="#fff"/></g>`,
+  narcan:`<g transform="rotate(-30 390 312)"><rect x="378" y="296" width="16" height="44" rx="4" fill="#fff" stroke="#4a6fa5" stroke-width="2"/><rect x="382" y="284" width="8" height="14" rx="3" fill="#4a6fa5"/></g>`,
+  shockFx:`<g><path class="draw" d="M40 70 H240 L260 70 L275 25 L292 115 L308 45 L320 70 H520 L535 70 L548 35 L562 105 L575 55 L585 70 H760" stroke="#1FA36B" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path class="pop-in" d="M178 250 l-26 40 h22 l-12 36 l34 -48 h-22 l12 -28z" fill="#FFC72C" stroke="#b98a00" stroke-width="2"/></g>`,
+  handsGlow:`<g class="pop-in"><circle cx="432" cy="336" r="26" fill="#FFC72C" opacity=".35"/><circle cx="432" cy="336" r="14" fill="#FFC72C" opacity=".5"/></g>`,
+  coffee:`<g><path d="M430 372 q30 -10 60 2 q-20 10 -60 -2z" fill="#6b3f1a" opacity=".7"/><rect x="470" y="356" width="18" height="22" rx="3" fill="#fff" transform="rotate(70 479 367)"/></g>`,
+  symptomTime:`<g class="pop-in"><rect x="270" y="60" width="260" height="52" rx="14" fill="#14211B"/><text x="400" y="96" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-weight="800" font-size="28" fill="#FFC72C">🕑 Symptoms started 2:14 PM</text></g>`,
+  chairsNear:`<g>${[280,640].map(x=>`<g><rect x="${x}" y="290" width="40" height="8" rx="3" fill="#3E6E8E"/><rect x="${x+32}" y="250" width="8" height="48" rx="3" fill="#3E6E8E"/><path d="M${x+4} 298 v44 M${x+36} 298 v44" stroke="#555" stroke-width="4"/></g>`).join('')}</g>`,
+  chairsFar:`<g class="pop-in">${[60,730].map(x=>`<g><rect x="${x}" y="290" width="40" height="8" rx="3" fill="#3E6E8E"/><rect x="${x+32}" y="250" width="8" height="48" rx="3" fill="#3E6E8E"/><path d="M${x+4} 298 v44 M${x+36} 298 v44" stroke="#555" stroke-width="4"/></g>`).join('')}</g>`,
+  pillow:`<ellipse cx="352" cy="374" rx="30" ry="10" fill="#6B8F71"/>`,
+  timer1:`<g class="pop-in"><rect x="300" y="60" width="200" height="52" rx="14" fill="#14211B"/><text x="400" y="96" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-weight="800" font-size="30" fill="#FFC72C">⏱ 0:48</text></g>`,
+  timer6:`<g class="pulse-soft"><rect x="300" y="60" width="200" height="52" rx="14" fill="#D7263D"/><text x="400" y="96" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-weight="800" font-size="30" fill="#fff">⏱ 5:40 and counting</text></g>`,
+  epiHand:`<g class="pop-in"><rect x="320" y="250" width="12" height="44" rx="5" fill="#F7A21B" stroke="#8a5a00" transform="rotate(-20 326 272)"/><rect x="320" y="244" width="12" height="10" rx="3" fill="#3B7DD8" transform="rotate(-20 326 272)"/></g>`,
+  epiThigh:`<g class="pop-in"><rect x="446" y="318" width="12" height="44" rx="5" fill="#F7A21B" stroke="#8a5a00" transform="rotate(20 452 340)"/><circle cx="452" cy="340" r="26" fill="#FFC72C" opacity=".25"/></g>`,
+  tqTime:`<g class="pop-in"><rect x="270" y="60" width="260" height="52" rx="14" fill="#14211B"/><text x="400" y="96" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-weight="800" font-size="28" fill="#FFC72C">✍️ TQ on at 3:42 PM</text></g>`,
+  sparkleLie:`<g class="pop-in"><circle cx="386" cy="326" r="20" fill="#9ED1F0" opacity=".4"/></g>`
+};
+
+function sceneSVG(sc,zones,extraProps){
+  let s=`<svg class="scene" viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${(sc.alt||'Emergency scene').replace(/"/g,'')}">`+DEFS;
+  s+=BG[sc.bg]();
+  const props=[...(sc.props||[]),...(extraProps||[])];
+  const late=['symptomTime','timer1','timer6','tqTime','epiHand','epiThigh','tick','clock','clock10','phone','shout','shoutK','keepCough','heartUp','heartUpLie','shockFx','spray','foodOut','ringOff','handsGlow'];
+  props.filter(p=>!late.includes(p)).forEach(p=>s+=PROPS[p]||'');
+  if(sc.mayaBehind)s+=mayaSVG(sc.maya);
+  s+=`<g class="${sc.patient.seize?'seize':''}">${patientSVG(sc.patient)}</g>`;
+  if(!sc.mayaBehind)s+=mayaSVG(sc.maya);
+  props.filter(p=>late.includes(p)).forEach(p=>s+=PROPS[p]||'');
+  [...(zones||[])].sort((a,b)=>(b.r?Math.PI*b.r*b.r:b.w*b.h)-(a.r?Math.PI*a.r*a.r:a.w*a.h)).forEach(z=>{
+    const shape=z.r?`<circle cx="${z.x}" cy="${z.y}" r="${z.r}"/>`:`<rect x="${z.x}" y="${z.y}" width="${z.w}" height="${z.h}" rx="14"/>`;
+    const lx=z.lx??(z.r?z.x:z.x+z.w/2),ly=z.ly??(z.r?z.y-z.r-8:z.y-8);
+    s+=`<g class="zone" data-zone="${z.id}" tabindex="0" role="button" aria-label="Drop on ${z.label}">${shape}<text x="${lx}" y="${ly}" text-anchor="middle">${z.label}</text></g>`;
+  });
+  return s+'</svg>';
+}
+const mayaFace=()=>`<svg viewBox="0 0 50 50"><rect width="50" height="50" fill="${outfit().jacket}"/><circle cx="25" cy="27" r="16" fill="${C.maya}"/><path d="M9 27 a16 16 0 0 1 32 -3 q-9 -7 -16 -3 q-9 -2 -16 6z" fill="${C.hair}"/><circle cx="31" cy="28" r="2.2" fill="#1b1b1b"/><circle cx="35" cy="33" r="2.6" fill="#E88B7A" opacity=".5"/><path d="M28 35 q3 2 6 0" stroke="#7a3b2a" stroke-width="1.6" fill="none"/></svg>`;
+const coachFace=`<svg viewBox="0 0 40 40"><path d="M20 35 L6 21 a8 8 0 0 1 14 -10 a8 8 0 0 1 14 10z" fill="#D7263D"/><path d="M9 21 h6 l2 -4 l3 8 l2 -5 h9" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+/* ---------- levels (content follows 2025 AHA guidelines + Red Cross first aid) ---------- */
+const cyclist={pose:'sit',x:540,skin:C.skinA,shirt:'#3E7CB1',pants:'#394A5A',hair:'#1D1D1D'};
+const libraryMan={pose:'lie',x:380,skin:C.skinB,shirt:'#7A4E9E',pants:'#3B3B3B',hair:'#6b4a2a'};
+const diner={pose:'stand',x:540,skin:C.skinC,shirt:'#D9577A',pants:'#2F3E4F',hair:'#1a1a1a',longHair:true};
+const cook={pose:'stand',x:450,skin:C.skinB,shirt:'#2E8B7A',pants:'#5A4636',hair:'#8B5A2B',longHair:true,hand:[400,268]};
+const player={pose:'sit',x:540,skin:C.skinA,shirt:'#E07A2E',pants:'#2F3E4F',hair:'#2a1a10'};
+const hallGuy={pose:'lie',x:380,skin:C.skinC,shirt:'#3F7F5F',pants:'#2B2F3A',hair:'#111'};
+const prof={pose:'sit',x:540,skin:C.skinB,shirt:'#8E5A9E',pants:'#3B3B4F',hair:'#C9C9C9',longHair:true};
+const student={pose:'lie',x:360,skin:C.skinA,shirt:'#D9A441',pants:'#394A5A',hair:'#2a1a10'};
+const barista={pose:'sit',x:540,skin:C.skinC,shirt:'#4A7FC1',pants:'#2F3E4F',hair:'#1a1a1a',longHair:true};
+const maker={pose:'sit',x:560,skin:C.skinB,shirt:'#355C7D',pants:'#2B2F3A',hair:'#3b2a1a'};
+
+const LEVELS=[
+ {id:'head',title:'Head wound',place:'MKT Trail',icon:'🚲',blurb:'A cyclist wipes out on the trail.',steps:[
+  {scene:{bg:'park',maya:{x:150},patient:{...cyclist,blood:2,sad:true},props:['bikeDown','bikeComing']},
+   say:'He crashed and his head is bleeding! But bikes are still flying down this path…',
+   zones:[{id:'traffic',x:640,y:220,w:150,h:120,label:'Oncoming bikes'},{id:'victim',x:420,y:226,w:150,h:156,label:'Cyclist'}],
+   cards:[{id:'stop',e:'🚧',t:'Stop the bikes and put on gloves',why:'Scene safety comes first. An injured helper can\'t help anyone, and gloves protect you both from infection.'},
+          {id:'grab',e:'🏃‍♀️',t:'Run in and pull him up',why:'Rushing into traffic can turn one casualty into two, and pulling him up could worsen a hidden injury.'},
+          {id:'film',e:'📱',t:'Record it for proof',why:'Seconds matter. Help first; filming can wait, forever.'}],
+   ans:['stop','traffic'],combos:{'stop:victim':'Right idea, wrong spot. Make the path safe first: drop it on the oncoming bikes.'},
+   after:{props:['bikeDown','bikeStopped','cones']},burst:[700,300]},
+  {scene:{bg:'park',maya:{x:400,kneel:true},patient:{...cyclist,blood:3,sad:true},props:['bikeDown','cones','bikeStopped']},
+   say:'The path is clear. There\'s so much blood! Scalp cuts bleed a lot.',
+   zones:[{id:'wound',x:540,y:252,r:36,label:'Wound'}],
+   cards:[{id:'press',e:'🩹',t:'Clean cloth, press firmly',why:'Firm, direct pressure is the fastest way to control bleeding.'},
+          {id:'rinse',e:'🚿',t:'Rinse it with water',why:'Rinsing a heavy bleed wastes time and keeps it flowing. Stop the bleeding first; cleaning comes later.'},
+          {id:'ice',e:'🧊',t:'Hold ice on it',why:'Ice does little for heavy bleeding. Direct pressure is what works.'}],
+   ans:['press','wound'],after:{patient:{blood:1,cloth:1},maya:{hand:[532,244]}},burst:[532,244]},
+  {scene:{bg:'park',maya:{x:400,kneel:true,hand:[532,244]},patient:{...cyclist,blood:1,cloth:1,soaked:true},props:['bikeDown','cones','bikeStopped']},
+   say:'Oh no, blood is soaking through the cloth.',
+   zones:[{id:'wound',x:540,y:252,r:36,label:'Soaked cloth'}],
+   cards:[{id:'layer',e:'➕',t:'Add another cloth on top',why:'Leave the first layer on. Lifting it tears off the clot that\'s forming.'},
+          {id:'peel',e:'✋',t:'Peel it off to check',why:'Peeling off the soaked cloth rips away the clot and restarts the bleeding. Add layers on top instead.'},
+          {id:'air',e:'🌬️',t:'Let it air out',why:'An uncovered wound keeps bleeding. Keep pressure on.'}],
+   ans:['layer','wound'],after:{patient:{cloth:2,soaked:false,blood:0}},burst:[535,240]},
+  {scene:{bg:'park',maya:{x:400,kneel:true,hand:[532,244]},patient:{...cyclist,cloth:2,dizzy:true,pale:true,sad:true,speech:'I feel sick… where am I?'},props:['bikeDown','cones','bikeStopped']},
+   say:'The bleeding slowed, but now he\'s confused and just threw up.',
+   zones:[{id:'victim',x:420,y:226,w:150,h:156,label:'Cyclist'}],
+   cards:[{id:'call',e:'📞',t:'Call 911 now',why:'Vomiting, confusion and memory loss after a head knock are warning signs of a serious brain injury. Keep him still and keep watching him.'},
+          {id:'pill',e:'💊',t:'Give him a painkiller',why:'Some painkillers increase bleeding, and they mask symptoms. These signs need emergency care.'},
+          {id:'sleep',e:'😴',t:'Let him sleep it off',why:'Sleep hides a worsening brain injury. These signs mean call for help now.'}],
+   ans:['call','victim'],after:{patient:{speech:''},props:['bikeDown','cones','phone','ambulance']},sfx:'siren',burst:[150,150]}
+ ]},
+ {id:'nose',title:'Nosebleed',place:'Stankowski Field',icon:'⚽',blurb:'A teammate takes a ball to the face.',steps:[
+  {scene:{bg:'field',maya:{x:300},patient:{...player,noseBleed:true,sad:true},props:['ball']},
+   say:'The ball hit him right in the face. His nose is bleeding, but he\'s talking.',
+   zones:[{id:'head',x:486,y:232,w:100,h:72,label:'His head'}],
+   cards:[{id:'forward',e:'⬇️',t:'Sit up and lean forward',why:'Leaning forward lets blood drain out instead of down the throat.'},
+          {id:'back',e:'⬆️',t:'Tilt his head back',why:'A classic myth. Tilting back sends blood down the throat, which can cause choking or vomiting.'},
+          {id:'flat',e:'🛌',t:'Lie him down flat',why:'Lying flat also sends blood down the throat. Sit up, lean forward.'}],
+   ans:['forward','head'],after:{patient:{lean:true}},burst:[520,270]},
+  {scene:{bg:'field',maya:{x:300},patient:{...player,noseBleed:true,lean:true,sad:true},props:['ball']},
+   say:'He\'s leaning forward. Now where do we pinch?',
+   zones:[{id:'bridge',x:462,y:244,w:62,h:28,label:'Bony bridge',lx:400,ly:264},{id:'soft',x:462,y:274,w:62,h:28,label:'Soft part',lx:410,ly:296}],
+   cards:[{id:'pinch',e:'🤏',t:'Pinch firmly',why:'Pinching the soft part below the bony bridge presses on the vessels that are bleeding.'},
+          {id:'tissue',e:'🧻',t:'Stuff tissue deep inside',why:'Packing the nose can irritate it and restart bleeding when removed. Pinch instead.'},
+          {id:'blow',e:'💨',t:'Blow the nose hard',why:'Blowing breaks up clots and restarts bleeding.'}],
+   ans:['pinch','soft'],combos:{'pinch:bridge':'Pinching the hard bony part does nothing. Pinch the soft part just below it.'},
+   after:{patient:{pinch:true,hand:[500,280]}},burst:[495,285]},
+  {scene:{bg:'field',maya:{x:300},patient:{...player,noseBleed:true,lean:true,pinch:true,hand:[500,280]},props:['ball']},
+   say:'He\'s pinching it. How long should he hold?',
+   zones:[{id:'head',x:450,y:232,w:120,h:80,label:'His head'}],
+   cards:[{id:'hold',e:'⏱️',t:'10–15 minutes, no peeking',why:'Constant pressure lets a clot form. If it\'s still bleeding after 20–30 minutes, or the nose looks broken, get medical help.'},
+          {id:'peek',e:'👀',t:'Let go every 30 seconds to check',why:'Checking breaks the clot. Hold steady pressure for 10–15 minutes.'},
+          {id:'play',e:'⚽',t:'Get back in the game',why:'Activity restarts the bleeding, and he may have other injuries. Rest first.'}],
+   ans:['hold','head'],after:{patient:{noseBleed:false,sad:false},props:['ball','clock10','heartUp']},burst:[520,250]}
+ ]},
+ {id:'burn',title:'Kitchen burn',place:'Schurz Hall',icon:'🍳',blurb:'Boiling water spills on a friend\'s hand.',steps:[
+  {scene:{bg:'kitchen',maya:{x:250},patient:{...cook,burn:true,distress:true},props:['steam']},
+   say:'The kettle tipped over and boiling water got her hand!',
+   zones:[{id:'sink',x:596,y:176,w:136,h:92,label:'Sink tap'},{id:'freezer',x:24,y:94,w:122,h:110,label:'Freezer'},{id:'hand',x:400,y:268,r:28,label:'Burned hand'}],
+   cards:[{id:'move',e:'🖐️',t:'Guide her hand to…',why:'Cool running water for at least 10 minutes (ideally 20) stops the burn going deeper and eases pain.'},
+          {id:'butter',e:'🧈',t:'Butter',why:'A myth. Butter and oils trap heat in the skin and raise infection risk.'},
+          {id:'toothpaste',e:'🪥',t:'Toothpaste',why:'Another myth. Toothpaste traps heat and irritates the burn.'}],
+   ans:['move','sink'],combos:{'move:freezer':'Ice and freezing cold damage burned skin even more. Cool running water from the tap is right.','move:hand':'Drag the hand card to where it can be cooled.'},
+   after:{maya:{x:420},patient:{x:580,dir:1,hand:[662,240],distress:false},props:['water','clock']},sfx:'whoosh',burst:[662,240]},
+  {scene:{bg:'kitchen',maya:{x:420},patient:{...cook,x:580,dir:1,hand:[662,240],burn:true,rings:true},props:['water']},
+   say:'Cooling it now. I just noticed she\'s wearing rings.',
+   zones:[{id:'hand',x:662,y:240,r:30,label:'Hand'}],
+   cards:[{id:'rings',e:'💍',t:'Gently remove rings now',why:'Burns swell fast. Rings left on can cut off circulation.'},
+          {id:'leave',e:'🤷‍♀️',t:'Leave them, it\'ll hurt',why:'Swelling can trap rings. Remove them early and gently.'},
+          {id:'scrub',e:'🧽',t:'Scrub the burn with soap',why:'Scrubbing damages fragile skin. Cool water is enough.'}],
+   ans:['rings','hand'],after:{patient:{rings:false},props:['water','ringOff']},burst:[662,240]},
+  {scene:{bg:'kitchen',maya:{x:250},patient:{...cook,burn:true,blisters:true}},
+   say:'Twenty minutes done. Small blisters are forming. How do I cover it?',
+   zones:[{id:'hand',x:400,y:268,r:28,label:'Hand'}],
+   cards:[{id:'film',e:'🎞️',t:'Loose cling film or non-stick dressing',why:'A loose, clean, non-stick cover protects the burn. Get medical care for large or deep burns, or burns on the face, hands, feet or genitals.'},
+          {id:'pop',e:'📌',t:'Pop the blisters',why:'Blisters protect the skin underneath. Popping them invites infection.'},
+          {id:'cotton',e:'☁️',t:'Wrap in cotton wool',why:'Fluffy fibers stick to burns and are painful to remove.'}],
+   ans:['film','hand'],after:{patient:{film:true},props:['heartUp']},burst:[400,268]}
+ ]},
+ {id:'choke',title:'Choking',place:'Plaza 900 Dining',icon:'🍽️',blurb:'Your roommate starts coughing at dinner.',steps:[
+  {scene:{bg:'dining',maya:{x:320},patient:{...diner,speech:'*cough* *cough*'}},
+   say:'She\'s coughing really hard, but she can still make sounds.',
+   zones:[{id:'her',x:486,y:160,w:110,h:226,label:'Roommate'}],
+   cards:[{id:'cough',e:'📣',t:'Encourage her to keep coughing',why:'A strong cough is the best way to clear the airway. Stay close and watch for it getting worse.'},
+          {id:'slap',e:'👋',t:'Start back blows right away',why:'Not yet. If she can cough forcefully and make sounds, let her cough. Step in if she can\'t cough, speak or breathe.'},
+          {id:'water',e:'🥤',t:'Hand her a glass of water',why:'Drinking while choking can make things worse. Let her cough it out.'}],
+   ans:['cough','her'],after:{patient:{speech:''},props:['keepCough']},burst:[540,200]},
+  {scene:{bg:'dining',maya:{x:320},patient:{...diner,throat:true,pale:true,distress:true,hand:[554,218]}},
+   say:'She can\'t cough, talk or breathe. She\'s holding her throat!',
+   zones:[{id:'her',x:486,y:160,w:110,h:226,label:'Roommate'}],
+   cards:[{id:'fivefive',e:'🤲',t:'5 back blows, then 5 abdominal thrusts',why:'This is the 2025 American Heart Association update: alternate 5 firm back blows between the shoulder blades with 5 abdominal thrusts, and repeat until it comes out. Have someone call 911.'},
+          {id:'water',e:'🥤',t:'Make her drink water',why:'She can\'t swallow with a blocked airway. Water won\'t help.'},
+          {id:'sweep',e:'👉',t:'Stick a finger down her throat',why:'Blind finger sweeps can push the object deeper. Use back blows and abdominal thrusts.'}],
+   ans:['fivefive','her'],after:{patient:{throat:false,pale:false,distress:false,hand:null,speech:'*gasp* …thank you'},props:['foodOut','heartUp']},burst:[520,210]},
+  {scene:{bg:'dining',maya:{x:320,kneel:true},patient:{...diner,pose:'sit',x:540,slump:true,eyesClosed:true,pale:true}},
+   say:'Replay: this time it didn\'t come out, and she went limp. What now?',
+   zones:[{id:'her',x:400,y:230,w:190,h:152,label:'Roommate'}],
+   cards:[{id:'cpr',e:'🫀',t:'Lower her down, call 911, start CPR',why:'Compressions can push the object out. Each time you open the airway, look in the mouth and remove anything you can see.'},
+          {id:'keep',e:'🔁',t:'Pull her up, keep doing thrusts',why:'Once she\'s unresponsive, switch to CPR on the floor.'},
+          {id:'wait',e:'⏳',t:'Wait for her to wake up',why:'Without air, brain damage starts within minutes. Act now.'}],
+   ans:['cpr','her'],after:{props:['phone','ambulance']},sfx:'siren',burst:[480,300]}
+ ]},
+ {id:'cpr',title:'Cardiac arrest',place:'Ellis Library',icon:'📚',blurb:'A student collapses in the stacks.',steps:[
+  {scene:{bg:'library',maya:{x:190},patient:{...libraryMan}},
+   say:'He just collapsed between the shelves! The area looks safe.',
+   zones:[{id:'body',x:350,y:320,w:300,h:70,label:'Him'}],
+   cards:[{id:'check',e:'🗣️',t:'Tap his shoulders, shout, check breathing',why:'Check responsiveness and breathing, for no more than 10 seconds, before deciding what\'s next.'},
+          {id:'water',e:'🥤',t:'Give him some water',why:'Never give anything by mouth to someone who collapsed. They could choke.'},
+          {id:'sit',e:'🪑',t:'Sit him up against a shelf',why:'Moving him before checking wastes time. Check responsiveness and breathing first.'}],
+   ans:['check','body'],after:{props:['shout']},burst:[260,130]},
+  {scene:{bg:'library',mayaBehind:true,maya:{x:470,kneel:true},patient:{...libraryMan,gasp:true}},
+   say:'No response. He\'s making strange gasping sounds. Is that breathing?',
+   zones:[{id:'body',x:350,y:320,w:300,h:70,label:'Him'}],
+   cards:[{id:'call',e:'📞',t:'Call 911 and send someone for the AED',why:'Occasional gasps are not real breathing. It\'s a sign of cardiac arrest, so get help and an AED on the way immediately.'},
+          {id:'wait',e:'⏳',t:'He\'s breathing, wait and watch',why:'Gasping is not normal breathing. Every minute without CPR lowers his chance of survival.'},
+          {id:'side',e:'↪️',t:'Roll him onto his side',why:'The recovery position is for someone breathing normally. He isn\'t: he needs CPR.'}],
+   ans:['call','body'],after:{patient:{gasp:false},props:['phone']},burst:[150,150]},
+  {scene:{bg:'library',mayaBehind:true,maya:{x:470,kneel:true},patient:{...libraryMan}},
+   say:'Help is coming. Time to start compressions. Where do my hands go?',
+   zones:[{id:'chest',x:400,y:318,w:60,h:66,label:'Chest',ly:310},{id:'belly',x:466,y:318,w:50,h:66,label:'Stomach',ly:406}],
+   cards:[{id:'heel',e:'🙌',t:'Heel of hand, other hand on top, arms locked',why:'Center of the chest, lower half of the breastbone. Shoulders above your hands, push straight down.'},
+          {id:'finger',e:'☝️',t:'Two fingertips, press gently',why:'Far too weak for an adult. You need the weight of your upper body behind locked arms.'},
+          {id:'fist',e:'✊',t:'One fist, bent elbow',why:'Bent arms tire fast and don\'t push deep enough. Lock your elbows and use both hands.'}],
+   ans:['heel','chest'],combos:{'heel:belly':'Right technique, wrong spot. Pushing on the stomach doesn\'t pump the heart and can hurt organs. Hands go on the center of the chest.'},
+   after:{maya:{hand:[432,334]},props:['handsGlow']},burst:[432,334]},
+  {rhythm:true,scene:{bg:'library',mayaBehind:true,maya:{x:470,kneel:true,hand:[432,334]},patient:{...libraryMan}},
+   say:'Push hard, at least 5 cm (2 inches) deep, and fast: 100 to 120 a minute. Follow the beat, like "Stayin\' Alive".',
+   after:{props:['heartUpLie']},burst:[432,334]},
+  {scene:{bg:'library',mayaBehind:true,maya:{x:470,kneel:true,hand:[432,334]},patient:{...libraryMan},props:['aedIn']},
+   say:'The AED is here! My arms are burning, but I can\'t stop.',
+   zones:[{id:'chest',x:400,y:318,w:60,h:66,label:'Bare chest',ly:310},{id:'aedz',x:124,y:294,w:92,h:82,label:'AED'}],
+   cards:[{id:'pads',e:'⚡',t:'Turn it on, stick the pads on',why:'AEDs talk you through it. Pads go on the bare chest as pictured; keep CPR going until it tells you to stand clear.'},
+          {id:'ignore',e:'🙅‍♀️',t:'Ignore it, keep pushing',why:'A shock can restart a heart in a rhythm CPR alone can\'t fix. Use the AED the moment it arrives.'},
+          {id:'read',e:'📖',t:'Read the full manual first',why:'No time! Just turn it on; it gives spoken, step-by-step instructions.'}],
+   ans:['pads','chest'],combos:{'pads:aedz':'Almost! The pads go on his bare chest.'},
+   after:{maya:{hand:null},patient:{pads:true,eyesOpen:true},props:['aed','shockFx','ambulance']},sfx:'zap',flash:true,burst:[420,330]}
+ ]},
+ {id:'overdose',title:'Opioid overdose',place:'Johnston Hall',icon:'🏠',blurb:'Someone won\'t wake up in the hallway.',steps:[
+  {scene:{bg:'hall',maya:{x:190},patient:{...hallGuy,snore:true}},
+   say:'He\'s slumped on the floor making a loud snoring, gurgling sound. His lips look blue.',
+   zones:[{id:'body',x:350,y:320,w:300,h:70,label:'Him'}],
+   cards:[{id:'rouse',e:'🗣️',t:'Shout his name, rub his breastbone hard',why:'Check if he responds. Unresponsive, slow or snoring breathing and blue lips are warning signs of an opioid overdose.'},
+          {id:'sleep',e:'😴',t:'He\'s just asleep, let him be',why:'Gurgling "snoring" with blue lips is not sleep. It can mean his breathing is failing.'},
+          {id:'shower',e:'🚿',t:'Drag him into a cold shower',why:'A myth. Cold water doesn\'t reverse an overdose and risks drowning or hypothermia.'}],
+   ans:['rouse','body'],after:{props:['shoutK']},burst:[330,160]},
+  {scene:{bg:'hall',mayaBehind:true,maya:{x:470,kneel:true},patient:{...hallGuy,blueLips:true,pale:true}},
+   say:'No response, and he\'s barely breathing. There\'s a naloxone box on the wall.',
+   zones:[{id:'body',x:350,y:320,w:300,h:70,label:'Him'}],
+   cards:[{id:'call',e:'📞',t:'Call 911 and grab the naloxone',why:'Get help coming and grab naloxone (Narcan). If he isn\'t breathing normally, CPR comes first, and naloxone goes in as soon as it\'s ready. Don\'t delay CPR looking for it.'},
+          {id:'walk',e:'🚶',t:'Walk him around to wake him',why:'A myth. Walking him around doesn\'t help and wastes critical time.'},
+          {id:'vomit',e:'🤢',t:'Make him throw up',why:'Never. It can make him choke. Call 911 and use naloxone.'}],
+   ans:['call','body'],after:{props:['phone']},burst:[150,150]},
+  {scene:{bg:'hall',mayaBehind:true,maya:{x:470,kneel:true},patient:{...hallGuy,blueLips:true,pale:true}},
+   say:'I have the Narcan nasal spray. Where does it go?',
+   zones:[{id:'nose',x:388,y:326,r:20,label:'Nose'},{id:'arm',x:420,y:360,w:92,h:30,label:'Arm',ly:406}],
+   cards:[{id:'narcan',e:'👃',t:'Naloxone nasal spray',why:'Tip in one nostril, press the plunger firmly. It works in minutes. If there\'s no response in 2–3 minutes, give a second dose.'},
+          {id:'coffee',e:'☕',t:'Pour coffee in his mouth',why:'Anything by mouth can make an unresponsive person choke.'},
+          {id:'slap',e:'👋',t:'Slap him awake',why:'Slapping won\'t reverse an opioid. Naloxone will.'}],
+   ans:['narcan','nose'],combos:{'narcan:arm':'This is the nasal spray version: it goes in one nostril. (There are injectable forms too, but not this one.)'},
+   after:{patient:{blueLips:false},props:['narcan','spray']},burst:[390,320]},
+  {scene:{bg:'hall',mayaBehind:true,maya:{x:470,kneel:true},patient:{...hallGuy,eyesOpen:true,speech:'…what happened?'}},
+   say:'He\'s breathing and groggy but awake! The ambulance is a few minutes out.',
+   zones:[{id:'body',x:350,y:320,w:300,h:70,label:'Him'}],
+   cards:[{id:'stay',e:'🛟',t:'Recovery position and stay with him',why:'Naloxone can wear off before the opioid does, so he could stop breathing again. Stay, watch his breathing, and give another dose if needed.'},
+          {id:'leave',e:'🚪',t:'He\'s fine now, head out',why:'Naloxone wears off in 30–90 minutes. He can slip back into overdose. Stay until help arrives.'},
+          {id:'coffee2',e:'☕',t:'Get him a coffee to sober up',why:'Caffeine doesn\'t counter opioids. Keep him on his side and stay.'}],
+   ans:['stay','body'],after:{patient:{side:true,speech:''},props:['ambulance','heartUpLie']},sfx:'siren',burst:[420,330]}
+ ]} ,{id:'stroke',title:'Stroke',place:'Francis Quadrangle',icon:'🧠',blurb:'A professor\'s speech suddenly slurs.',steps:[
+  {scene:{bg:'quad',maya:{x:300},patient:{...prof,speech:'I… cahn… find words'},props:['coffee']},
+   say:'Professor Lee dropped her coffee, and her words are coming out slurred. Something\'s wrong.',
+   zones:[{id:'face',x:540,y:266,r:36,label:'Her face'},{id:'her',x:420,y:226,w:170,h:158,label:'Professor',ly:404}],
+   cards:[{id:'smile',e:'😁',t:'Ask her to smile',why:'That\'s the F in BE FAST: Face. A smile that droops on one side is a classic stroke sign.'},
+          {id:'water',e:'🥤',t:'Give her water',why:'A stroke can make swallowing unsafe. Nothing by mouth until she\'s checked.'},
+          {id:'nap',e:'😴',t:'Suggest she lie down and rest',why:'Resting wastes the most important thing in a stroke: time. Check her with BE FAST.'}],
+   ans:['smile','face'],combos:{'smile:her':'Right check, drop it on her face.'},after:{patient:{droop:true,speech:''}},burst:[540,266]},
+  {scene:{bg:'quad',maya:{x:300},patient:{...prof,droop:true},props:['coffee']},
+   say:'Her smile droops on the left side. What\'s the next check?',
+   zones:[{id:'arms',x:430,y:276,w:100,h:72,label:'Her arms'},{id:'face',x:540,y:266,r:36,label:'Her face',ly:222}],
+   cards:[{id:'raise',e:'🙆‍♀️',t:'Ask her to raise both arms',why:'A for Arms: if one arm drifts down, that\'s another stroke sign.'},
+          {id:'rub',e:'🤲',t:'Rub her arm to warm it up',why:'Weakness from a stroke isn\'t cold or cramp. Rubbing wastes time.'},
+          {id:'walk',e:'🚶‍♀️',t:'Help her walk to the car',why:'Her balance may be off (the B in BE FAST). Keep her sitting safely.'}],
+   ans:['raise','arms'],after:{patient:{droop:true,armsTest:true,drift:true}},burst:[470,310]},
+  {scene:{bg:'quad',maya:{x:300},patient:{...prof,droop:true,armsTest:true,drift:true},props:['coffee']},
+   say:'One arm drifts down. Face, arm and speech are all off.',
+   zones:[{id:'her',x:420,y:226,w:170,h:158,label:'Professor'}],
+   cards:[{id:'call',e:'📞',t:'Call 911 and note when it started',why:'T for Time. Stroke treatment depends on the exact time symptoms began, and paramedics can alert a stroke center on the way.'},
+          {id:'aspirin',e:'💊',t:'Give her an aspirin',why:'Not for a stroke. Some strokes are bleeds, and aspirin could make them worse. Let the hospital decide.'},
+          {id:'drive',e:'🚗',t:'Drive her to urgent care',why:'Urgent care can\'t treat strokes. Ambulances start care sooner and go straight to a stroke center.'}],
+   ans:['call','her'],after:{props:['coffee','phone','symptomTime']},burst:[150,150]},
+  {scene:{bg:'quad',maya:{x:400,kneel:true},patient:{...prof,droop:true,sad:true},props:['coffee','symptomTime']},
+   say:'The ambulance is five minutes out. She looks scared.',
+   zones:[{id:'her',x:420,y:226,w:170,h:158,label:'Professor'}],
+   cards:[{id:'stay',e:'🤝',t:'Stay, reassure her, nothing to eat or drink',why:'Keep her calm and comfortable, watch her breathing, and be ready to tell paramedics the start time.'},
+          {id:'snack',e:'🍪',t:'Give her a snack for energy',why:'Swallowing may be affected. Nothing by mouth.'},
+          {id:'leave',e:'🏃‍♀️',t:'Run to the road to wave them down',why:'Stay with her, or send someone else. She could get worse or stop breathing.'}],
+   ans:['stay','her'],after:{props:['coffee','ambulance','heartUp']},sfx:'siren',burst:[540,240]}
+ ]},
+ {id:'seizure',title:'Seizure',place:'Jesse Hall',icon:'⚡',blurb:'A classmate collapses and starts shaking.',steps:[
+  {scene:{bg:'classroom',maya:{x:160},patient:{...student,seize:true},props:['chairsNear']},
+   say:'He fell out of his chair and he\'s jerking all over. The chairs are right next to him!',
+   zones:[{id:'chairs',x:270,y:240,w:60,h:110,label:'Chairs'},{id:'him',x:360,y:320,w:280,h:70,label:'Him',ly:410}],
+   cards:[{id:'clear',e:'🪑',t:'Move hard objects away',why:'Keep him safe: clear chairs, desks and anything sharp so he can\'t hit them.'},
+          {id:'hold',e:'✋',t:'Hold his arms and legs still',why:'Never restrain someone having a seizure. It can injure them and you.'},
+          {id:'pen',e:'🖊️',t:'Put a pen in his mouth',why:'A dangerous myth. People can\'t swallow their tongue, and objects can break teeth or block the airway.'}],
+   ans:['clear','chairs'],combos:{'clear:him':'Right idea: move the hazards, not him. Drop it on the chairs.'},after:{props:['chairsFar']},sfx:'whoosh',burst:[300,290]},
+  {scene:{bg:'classroom',mayaBehind:true,maya:{x:470,kneel:true},patient:{...student,x:370,seize:true},props:['chairsFar']},
+   say:'The area is clear. He\'s still shaking.',
+   zones:[{id:'head',x:370,y:354,r:32,label:'His head'}],
+   cards:[{id:'cushion',e:'🎒',t:'Cushion his head and start a timer',why:'Something soft under the head prevents injury, and timing it tells you when to call 911.'},
+          {id:'wallet',e:'👛',t:'Wedge a wallet between his teeth',why:'Never put anything in the mouth during a seizure.'},
+          {id:'water',e:'💦',t:'Splash water on his face',why:'Water won\'t stop a seizure and can be inhaled.'}],
+   ans:['cushion','head'],after:{props:['chairsFar','pillow','timer1']},burst:[370,354]},
+  {scene:{bg:'classroom',mayaBehind:true,maya:{x:470,kneel:true},patient:{...student,x:370,seize:true},props:['chairsFar','pillow','timer6']},
+   say:'It\'s been over five minutes and he\'s still seizing.',
+   zones:[{id:'him',x:340,y:320,w:280,h:70,label:'Him',ly:410}],
+   cards:[{id:'call',e:'📞',t:'Call 911 now',why:'A seizure lasting more than 5 minutes is a medical emergency. Also call for a first seizure, an injury, or if they don\'t wake up.'},
+          {id:'wait',e:'⏳',t:'Wait, it will stop on its own',why:'Past 5 minutes, it may not. Call 911.'},
+          {id:'cpr',e:'🫀',t:'Start CPR',why:'Not during the seizure. If he isn\'t breathing normally once it ends, then start CPR.'}],
+   ans:['call','him'],after:{props:['chairsFar','pillow','phone']},burst:[150,150]},
+  {scene:{bg:'classroom',mayaBehind:true,maya:{x:470,kneel:true},patient:{...student,x:370,snore:true},props:['chairsFar','pillow']},
+   say:'The shaking stopped. He\'s breathing, but drowsy and confused.',
+   zones:[{id:'him',x:340,y:320,w:280,h:70,label:'Him',ly:410}],
+   cards:[{id:'side',e:'↪️',t:'Roll him onto his side and stay',why:'The recovery position keeps the airway clear while he comes round. Stay and talk calmly until he\'s fully awake.'},
+          {id:'water2',e:'🥤',t:'Sit him up and give water',why:'He may not swallow safely yet. Nothing by mouth until he\'s fully alert.'},
+          {id:'leave',e:'🚪',t:'Let him sleep, get back to class',why:'He needs someone with him until he\'s fully aware again.'}],
+   ans:['side','him'],after:{patient:{side:true,snore:false},props:['chairsFar','ambulance','heartUpLie']},sfx:'siren',burst:[420,330]}
+ ]},
+ {id:'allergy',title:'Allergic reaction',place:'Student Center',icon:'🥜',blurb:'A friend bites a cookie with hidden nuts.',steps:[
+  {scene:{bg:'cafe',maya:{x:300},patient:{...barista,hives:true,swollen:true,speech:'*wheeze* can\'t… breathe'}},
+   say:'She just ate a cookie. Her lips are swelling, she has hives, and she\'s wheezing. She has a nut allergy.',
+   zones:[{id:'her',x:420,y:226,w:170,h:158,label:'Her'}],
+   cards:[{id:'epi',e:'📞',t:'Call 911 and grab her epinephrine auto-injector',why:'Swelling plus breathing trouble after a known allergen is anaphylaxis. Epinephrine is the treatment, and it works best early.'},
+          {id:'anti',e:'💊',t:'Give an antihistamine and wait',why:'Antihistamines don\'t stop airway swelling or low blood pressure. Epinephrine first.'},
+          {id:'air',e:'🚶‍♀️',t:'Walk her outside for fresh air',why:'Walking can make her collapse. Keep her still, sitting or lying.'}],
+   ans:['epi','her'],after:{patient:{speech:''},props:['phone','epiHand']},burst:[190,250]},
+  {scene:{bg:'cafe',maya:{x:300},patient:{...barista,hives:true,swollen:true},props:['epiHand']},
+   say:'I have her auto-injector. Where does it go?',
+   zones:[{id:'thigh',x:418,y:340,w:92,h:44,label:'Outer thigh',ly:404},{id:'arm',x:476,y:292,w:52,h:50,label:'Arm',lx:500,ly:284},{id:'belly',x:532,y:300,w:44,h:64,label:'Stomach',lx:600,ly:330}],
+   cards:[{id:'pen',e:'💉',t:'Epinephrine auto-injector',why:'Outer middle of the thigh, and it works through clothing. Press firmly until it clicks and hold it there as the label says.'},
+          {id:'inhaler',e:'🌬️',t:'Her friend\'s asthma inhaler',why:'An inhaler can\'t reverse anaphylaxis. Use epinephrine.'},
+          {id:'ice',e:'🧊',t:'Ice on the hives',why:'Hives aren\'t the danger here. Her airway is.'}],
+   ans:['pen','thigh'],combos:{'pen:arm':'Auto-injectors go into the outer thigh, a big muscle that absorbs it fast, not the arm.','pen:belly':'Not the stomach: outer middle of the thigh, through clothing is fine.'},
+   after:{patient:{swollen:false,distress:false},props:['epiThigh','heartUp']},burst:[452,340]},
+  {scene:{bg:'cafe',maya:{x:320},patient:{...barista,hives:true,swollen:true,speech:'it\'s… coming back'},props:['epiThigh']},
+   say:'She improved, but 10 minutes later the wheezing is back. The ambulance isn\'t here yet.',
+   zones:[{id:'her',x:420,y:226,w:170,h:158,label:'Her'}],
+   cards:[{id:'second',e:'💉',t:'Give a second auto-injector if she has one',why:'If symptoms don\'t improve or come back after 5–15 minutes, a second dose is recommended. She still needs the hospital even if she feels better.'},
+          {id:'stand',e:'🧍‍♀️',t:'Stand her up and walk to meet the ambulance',why:'Standing can make her collapse. Keep her sitting if breathing is hard, or lying down if she feels faint.'},
+          {id:'cancel',e:'📵',t:'She\'s better now, cancel 911',why:'Anaphylaxis can return hours later. She needs to be checked at a hospital.'}],
+   ans:['second','her'],after:{patient:{speech:'',swollen:false},props:['epiThigh','ambulance']},sfx:'siren',burst:[520,280]}
+ ]},
+ {id:'bleed',title:'Severe bleeding',place:'Lafferre Hall',icon:'🔧',blurb:'A glass panel shatters in the makerspace.',steps:[
+  {scene:{bg:'lab',maya:{x:260},patient:{...maker,longArm:true,spurt:true,pool:1,distress:true}},
+   say:'A glass panel shattered and cut his forearm. Bright red blood is spurting out!',
+   zones:[{id:'wound',x:426,y:288,w:50,h:48,label:'Wound',ly:280}],
+   cards:[{id:'press',e:'✋',t:'Call 911, press hard on the wound',why:'Get help coming, then put firm, direct pressure on the wound with gloves or a cloth if you have them.'},
+          {id:'rinse',e:'🚿',t:'Rinse it under the sink first',why:'With life-threatening bleeding, every second counts. Stop the bleeding first.'},
+          {id:'kit',e:'🏃‍♀️',t:'Run to find a kit in another building',why:'He could lose too much blood while you\'re gone. Press now and send someone else.'}],
+   ans:['press','wound'],after:{maya:{x:330,kneel:true,hand:[448,312]},patient:{spurt:false,ooze:true}},burst:[448,312]},
+  {scene:{bg:'lab',maya:{x:330,kneel:true,hand:[448,312]},patient:{...maker,longArm:true,spurt:true,pool:2,pale:true}},
+   say:'It\'s pouring through my fingers. There\'s a tourniquet in the Stop the Bleed kit.',
+   zones:[{id:'above',x:486,y:292,w:56,h:44,label:'Upper arm',ly:284},{id:'onwound',x:430,y:292,w:48,h:44,label:'On wound',ly:356},{id:'wrist',x:392,y:288,w:36,h:40,label:'Wrist',ly:280}],
+   cards:[{id:'tq',e:'🎗️',t:'Tourniquet',why:'2–3 inches above the wound, between the wound and the heart, never on a joint.'},
+          {id:'cable',e:'🔌',t:'Tie a charging cable tight',why:'Thin cords cut into skin and rarely stop arterial bleeding. Use a real tourniquet.'},
+          {id:'raise',e:'⬆️',t:'Lift his arm and wait',why:'Raising the arm won\'t stop bleeding like this. It needs a tourniquet.'}],
+   ans:['tq','above'],combos:{'tq:onwound':'Not on the wound: place it 2–3 inches above it, closer to the heart.','tq:wrist':'Below the wound won\'t stop blood flowing into it. Go 2–3 inches above the wound.'},
+   after:{maya:{hand:[505,300]},patient:{tq:true,tqNew:true,spurt:false,ooze:true}},burst:[505,312]},
+  {scene:{bg:'lab',maya:{x:330,kneel:true,hand:[505,300]},patient:{...maker,longArm:true,tq:true,ooze:true,pool:2,pale:true,speech:'Ow! That really hurts!'}},
+   say:'The tourniquet is on, but it\'s still bleeding a little, and he says it hurts a lot.',
+   zones:[{id:'tqz',x:486,y:280,w:56,h:56,label:'Tourniquet',ly:272}],
+   cards:[{id:'tighten',e:'🔄',t:'Twist until bleeding stops, note the time',why:'Tighten until the bleeding stops. It will hurt; that\'s expected. Write down the time and leave it on for the paramedics.'},
+          {id:'loosen',e:'↩️',t:'Loosen it a bit so it hurts less',why:'A loose tourniquet can make bleeding worse. Keep it tight until medical help takes over.'},
+          {id:'remove',e:'✂️',t:'Take it off after 5 minutes to check',why:'Only medical staff should remove a tourniquet.'}],
+   ans:['tighten','tqz'],after:{patient:{tight:true,tqNew:false,ooze:false,speech:''},props:['tqTime','ambulance']},sfx:'siren',burst:[505,312]}
+ ]}
+
+];
+const ORDER=['burn','choke','allergy','nose','overdose','cpr','seizure','stroke','bleed','head'];
+LEVELS.sort((a,b)=>ORDER.indexOf(a.id)-ORDER.indexOf(b.id));
+const MAXSTARS=LEVELS.length*3;
+const BADGES=[
+  {id:'first',ic:'🩹',name:'M-I-Z!',desc:'Finish any emergency.'},
+  {id:'flawless',ic:'💎',name:'Z-O-U!',desc:'Finish an emergency without a mistake.'},
+  {id:'speedy',ic:'⚡',name:'Tiger reflexes',desc:'Make a correct call in under 4 seconds.'},
+  {id:'streak5',ic:'🔥',name:'Black & Gold streak',desc:'Get 5 correct calls in a row.'},
+  {id:'pulse',ic:'💓',name:'Tiger heartbeat',desc:'Hit 80% or better on the CPR rhythm.'},
+  {id:'myth',ic:'🧠',name:'Show-Me skeptic',desc:'Make 15 correct calls in total.'},
+  {id:'naloxone',ic:'👃',name:'Tigers look out',desc:'Finish the Johnston Hall overdose emergency.'},
+  {id:'realcpr',ic:'🫳',name:'Real Tiger hands',desc:'Score 70%+ in the CPR Lab using a phone, webcam or sensor.'},
+  {id:'bodymind',ic:'🧬',name:'Beyond the Columns',desc:'Finish the stroke, seizure, allergy and bleeding emergencies.'},
+  {id:'curious',ic:'💬',name:'Show me why',desc:'Ask Coach Pulse a question.'},
+  {id:'hero',ic:'🏆',name:'Homecoming hero',desc:'Save the day at every spot on campus.'}
+];
+/* ---------- screens & HUD ---------- */
+let run=null,timerId=null,timeLeft=0,armed=null,locked=false,cpr=null,lastBeat=0,stepStart=0;
+const TIME=25;
+function show(id){['title','map','play'].forEach(s=>$(s).classList.toggle('hidden',s!==id));
+  const playing=id==='play';['barScore','barStreak','hearts'].forEach(i=>$(i).classList.toggle('hidden',!playing));
+  $('barStars').classList.toggle('hidden',playing);$('mapBtn').classList.toggle('hidden',id!=='play');
+  window.scrollTo({top:0,behavior:'instant'});}
+function totalStars(){return Object.values(P.stars).reduce((a,b)=>a+b,0)}
+function updateHud(lost){
+  $('starCount').textContent=totalStars();
+  if(!run)return;$('score').textContent=run.score;$('streak').textContent=run.streak;
+  $('hearts').innerHTML=[0,1,2].map(i=>`<svg viewBox="0 0 24 24" class="${lost&&i===run.lives?'lost':''}"><path d="M12 21 L3 12 a5 5 0 0 1 9 -6 a5 5 0 0 1 9 6 Z" fill="${i<run.lives?'#FF4D6D':'none'}" stroke="#fff" stroke-width="1.8"/></svg>`).join('');
+}
+function toast(ic,title,text){const t=document.createElement('div');t.className='toast';t.innerHTML=`<span class="ic">${ic}</span><div><b>${title}</b>${text}</div>`;$('toasts').appendChild(t);setTimeout(()=>{t.style.transition='opacity .4s';t.style.opacity=0;setTimeout(()=>t.remove(),400)},3600)}
+function pop(t){const d=document.createElement('div');d.className='pop';d.textContent=t;document.body.appendChild(d);setTimeout(()=>d.remove(),1000)}
+function award(id){if(P.badges.includes(id))return false;P.badges.push(id);save();const b=BADGES.find(b=>b.id===id);SFX.unlock();toast(b.ic,'Badge earned: '+b.name,b.desc);return true}
+function checkOutfits(){OUTFITS.forEach(o=>{if(totalStars()>=o.need&&!P.seenOutfits.includes(o.id)){P.seenOutfits.push(o.id);save();setTimeout(()=>toast('🧥','New outfit unlocked',o.name+'. Find it in Truman\'s wardrobe.'),900)}})}
+
+/* ---------- particles ---------- */
+const fx={parts:[],raf:0};
+function burst(sx,sy,kind='sparkle',n=26){
+  if(REDUCED)return;const cv=$('fx'),r=cv.getBoundingClientRect(),dpr=devicePixelRatio||1;
+  if(cv.width!==r.width*dpr){cv.width=r.width*dpr;cv.height=r.height*dpr}
+  const k=r.width/800,x=sx*k*dpr,y=sy*k*dpr;
+  const cols=kind==='bad'?['#D7263D','#FF6B6B','#7a0f1f']:['#FFC72C','#1FA36B','#FFFFFF','#FF4D6D','#8FD0F2'];
+  for(let i=0;i<n;i++){const a=Math.random()*Math.PI*2,sp=(2+Math.random()*5)*dpr;
+    fx.parts.push({x,y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-(kind==='confetti'?4*dpr:1.5*dpr),life:1,c:cols[i%cols.length],s:(3+Math.random()*4)*dpr,shape:kind==='confetti'?'rect':(i%3===0?'star':'dot'),rot:Math.random()*6})}
+  if(!fx.raf)fx.raf=requestAnimationFrame(tickFx);
+}
+function tickFx(){const cv=$('fx'),g=cv.getContext('2d');g.clearRect(0,0,cv.width,cv.height);
+  fx.parts=fx.parts.filter(p=>p.life>0);
+  fx.parts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=.18*(devicePixelRatio||1);p.vx*=.98;p.life-=.018;p.rot+=.15;g.globalAlpha=Math.max(0,p.life);g.fillStyle=p.c;
+    g.save();g.translate(p.x,p.y);g.rotate(p.rot);
+    if(p.shape==='rect')g.fillRect(-p.s,-p.s/2,p.s*2,p.s);
+    else if(p.shape==='star'){g.beginPath();for(let i=0;i<5;i++){g.lineTo(Math.cos(i*1.2566)*p.s*1.6,Math.sin(i*1.2566)*p.s*1.6);g.lineTo(Math.cos(i*1.2566+.628)*p.s*.6,Math.sin(i*1.2566+.628)*p.s*.6)}g.fill()}
+    else{g.beginPath();g.arc(0,0,p.s,0,7);g.fill()}
+    g.restore()});
+  g.globalAlpha=1;fx.raf=fx.parts.length?requestAnimationFrame(tickFx):0;}
+
+/* ---------- title ---------- */
+function renderTitle(){
+  $('titleArt').innerHTML=`<svg viewBox="40 60 300 340" preserveAspectRatio="xMidYMax meet"><circle cx="190" cy="250" r="130" fill="#ffffff" opacity=".06"/><circle cx="190" cy="250" r="90" fill="#ffffff" opacity=".06"/>${mayaSVG({x:190,hand:[230,200]})}<g class="pulse-soft"><path d="M246 188 l-14 -14 a8 8 0 0 1 14 -10 a8 8 0 0 1 14 10z" fill="#FF4D6D"/></g></svg>`;
+}
+
+/* ---------- campus map ---------- */
+const NODES=[[110,630],[300,590],[520,640],[700,530],[500,450],[260,440],[110,300],[330,230],[560,270],[700,120]];
+function unlocked(i){return P.demo||i===0||P.stars[LEVELS[i-1].id]>0}
+function renderMap(){
+  const ts=totalStars();$('progFill').style.width=(ts/MAXSTARS*100)+'%';$('progText').textContent=`${ts} of ${MAXSTARS} stars`;
+  const nextOutfit=OUTFITS.find(o=>o.need>ts);$('wardText').textContent=nextOutfit?`Next outfit at ${nextOutfit.need} stars.`:'Every outfit unlocked!';
+  $('badgeText').textContent=`${P.badges.length} of ${BADGES.length} earned.`;
+  const cur=LEVELS.findIndex((l,i)=>unlocked(i)&&!P.stars[l.id]);const curI=cur<0?LEVELS.length-1:cur;
+  let path='M'+NODES.map(n=>n.join(' ')).join(' L');
+  let s=`<svg viewBox="0 0 800 710" role="img" aria-label="Campus map with ten emergency locations">${DEFS}
+  <rect width="800" height="710" fill="#9CCB76"/><path d="M0 0 H800 V90 Q600 130 400 100 T0 120Z" fill="#8FC06C"/>
+  <ellipse cx="700" cy="650" rx="110" ry="40" fill="#7EC4E8"/><ellipse cx="700" cy="644" rx="80" ry="26" fill="#9ED6F2"/>
+  ${[[40,60],[70,90],[460,40],[780,300],[40,420],[400,560],[620,390],[200,330],[460,160],[30,520],[780,420]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="24" fill="#5E9E4E"/><circle cx="${x-6}" cy="${y-6}" r="12" fill="#6DB05B"/>`).join('')}
+  <g transform="translate(160 190)"><rect x="-70" y="-6" width="160" height="14" rx="4" fill="#E9E2D0"/>${[0,1,2,3,4,5].map(i=>`<rect x="${-60+i*26}" y="-60" width="10" height="56" rx="3" fill="#F4EEDD" stroke="#cfc6ae"/>`).join('')}</g>
+  <path d="${path}" stroke="#E9DFC6" stroke-width="30" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <path class="dash-path" d="${path}" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity=".8"/>`;
+  const bld=[[16,520,'#C9703A'],[330,480,'#5B8C5A'],[560,560,'#3E6E8E'],[716,400,'#7A4E9E'],[560,350,'#8C5F3B'],[140,480,'#B5473A'],[380,300,'#D9A441'],[420,90,'#C9703A'],[540,40,'#56666f']];
+  bld.forEach(([x,y,c])=>s+=`<g opacity=".95"><rect x="${x}" y="${y}" width="84" height="54" rx="6" fill="${c}"/><path d="M${x-6} ${y} L${x+42} ${y-26} L${x+90} ${y}z" fill="${c}" opacity=".8"/>${[0,1,2].map(i=>`<rect x="${x+10+i*24}" y="${y+14}" width="14" height="16" rx="2" fill="#FFF3C4" opacity=".85"/>`).join('')}</g>`);
+  LEVELS.forEach((l,i)=>{const [x,y]=NODES[i],open=unlocked(i),st=P.stars[l.id]||0,isCur=i===curI&&open;
+    s+=`<g class="node${open?'':' locked'}${isCur?' current':''}" data-i="${i}" tabindex="0" role="button" aria-label="${l.place}: ${l.title}${open?'':' (locked)'}${st?`, ${st} stars`:''}">
+      <circle class="ring" cx="${x}" cy="${y}" r="34"/>
+      <circle cx="${x}" cy="${y+5}" r="34" fill="#000" opacity=".15"/>
+      <circle class="disc" cx="${x}" cy="${y}" r="34" fill="${open?(st?'#00754A':'#FFC72C'):'#9AA7A0'}" stroke="#fff" stroke-width="5"/>
+      <text x="${x}" y="${y+11}" text-anchor="middle" font-size="30">${open?l.icon:'🔒'}</text>
+      <rect x="${x-62}" y="${y+40}" width="124" height="26" rx="13" fill="#fff" opacity=".95"/>
+      <text x="${x}" y="${y+59}" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-weight="800" font-size="18" fill="#14211B">${l.place}</text>
+      ${open?[0,1,2].map(k=>`<path transform="translate(${x-26+k*26} ${y-50}) scale(.9)" d="M0 -10 L3 -3 L10 -3 L4.5 1.5 L6.5 9 L0 4.5 L-6.5 9 L-4.5 1.5 L-10 -3 L-3 -3Z" fill="${k<st?'#FFC72C':'#ffffff'}" stroke="#b98a00" stroke-width="1.5" opacity="${k<st?1:.7}"/>`).join(''):''}
+    </g>`;});
+  const [px,py]=NODES[curI];
+  s+=`<g class="pin" pointer-events="none"><g transform="translate(${px+50} ${py-150}) scale(.42)">${mayaSVG({x:0},outfit()).replace('id="mayaG"','').replace(/<ellipse cx="0" cy="382"[^>]*\/>/,'')}</g></g>`;
+  s+='</svg>';$('mapCard').innerHTML=s;
+  document.querySelectorAll('.node').forEach(n=>{const go=()=>{const i=+n.dataset.i;if(!unlocked(i)){SFX.bad();toast('🔒','Locked','Clear '+LEVELS[i-1].place+' first.');return}SFX.click();startLevel(i)};n.onclick=go;n.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go()}}});
+}
+
+/* ---------- play ---------- */
+function startLevel(i){run={li:i,lv:LEVELS[i],st:0,score:0,streak:0,lives:3,log:[],results:[],correct:0,total:0,cpr:null};show('play');nextStep()}
+function stepNow(){return run.lv.steps[run.st]}
+function renderDots(){$('dots').innerHTML=run.lv.steps.map((_,i)=>`<i class="${run.results[i]===true?'done':run.results[i]===false?'miss':i===run.st?'now':''}"></i>`).join('')}
+function nextStep(){
+  const step=stepNow();
+  if(!step||run.lives<=0)return finishLevel();
+  locked=false;armed=null;cpr=null;
+  $('sTitle').textContent=`${run.lv.place}: ${run.lv.title}`;renderDots();
+  $('sceneHost').innerHTML=`<div>${sceneSVG(step.scene,step.zones)}</div>`;
+  $('face').innerHTML=mayaFace();$('bubble').innerHTML=`<b>Truman</b>${step.say}`;speak(step.say);
+  $('feedback').className='feedback hidden';$('vignette').className='vignette';
+  updateHud();
+  if(step.rhythm)return startRhythm();
+  senseStop();
+  $('rhythm').classList.add('hidden');$('trayBox').classList.remove('hidden');$('timer').classList.remove('hidden');
+  const cards=[...step.cards].sort(()=>Math.random()-.5);
+  $('tray').innerHTML=cards.map(c=>`<button class="card" data-card="${c.id}"><span class="em">${c.e}</span><span>${c.t}</span></button>`).join('');
+  document.querySelectorAll('.card').forEach(wireCard);
+  wireZones();startTimer();
+}
+function wireZones(){document.querySelectorAll('#sceneHost .zone').forEach(z=>{
+  z.addEventListener('click',()=>{if(armed)drop(armed,z.dataset.zone)});
+  z.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&armed){e.preventDefault();drop(armed,z.dataset.zone)}});})}
+function wireCard(el){
+  el.addEventListener('pointerdown',e=>{
+    if(locked)return;e.preventDefault();ac();
+    const sx=e.clientX,sy=e.clientY;let ghost=null,hot=null;
+    const move=ev=>{
+      if(!ghost&&Math.hypot(ev.clientX-sx,ev.clientY-sy)>8){ghost=el.cloneNode(true);ghost.classList.add('ghost');ghost.style.width=el.offsetWidth+'px';document.body.appendChild(ghost);$('sceneWrap').classList.add('dragging');SFX.pick()}
+      if(ghost){ghost.style.left=ev.clientX+'px';ghost.style.top=ev.clientY+'px';
+        const t=document.elementFromPoint(ev.clientX,ev.clientY),z=t&&t.closest&&t.closest('.zone');
+        if(hot!==z){hot&&hot.classList.remove('hot');hot=z;if(hot){hot.classList.add('hot');tone(880,.04,'sine',.05)}}}
+    };
+    const up=()=>{window.removeEventListener('pointermove',move);window.removeEventListener('pointerup',up);window.removeEventListener('pointercancel',up);
+      $('sceneWrap').classList.remove('dragging');
+      if(ghost){ghost.remove();hot&&hot.classList.remove('hot');if(hot)drop(el.dataset.card,hot.dataset.zone)}else arm(el)};
+    window.addEventListener('pointermove',move);window.addEventListener('pointerup',up);window.addEventListener('pointercancel',up);
+  });
+  el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();arm(el)}});
+}
+function arm(el){
+  if(locked)return;SFX.pick();
+  document.querySelectorAll('.card').forEach(c=>c.classList.remove('selected'));
+  const step=stepNow();
+  if(step.zones.length===1){drop(el.dataset.card,step.zones[0].id);return}
+  armed=el.dataset.card;el.classList.add('selected');$('sceneWrap').classList.add('armed');
+  document.querySelector('#sceneHost .zone').focus({preventScroll:true});
+}
+function startTimer(){
+  clearInterval(timerId);timeLeft=TIME;stepStart=performance.now();lastBeat=0;
+  const bar=$('timerBar');bar.style.transform='scaleX(1)';$('timer').classList.remove('low');
+  timerId=setInterval(()=>{timeLeft-=.1;bar.style.transform=`scaleX(${Math.max(0,timeLeft/TIME)})`;
+    if(timeLeft<8){$('timer').classList.add('low');$('vignette').classList.add('danger');const gap=timeLeft<4?.5:.9;if(performance.now()-lastBeat>gap*1000){SFX.beat();lastBeat=performance.now()}}
+    if(timeLeft<=0){clearInterval(timerId);drop(null,null)}},100);
+}
+function playAfter(step,good){
+  if(!good||!step.after)return;
+  const a=step.after,sc=step.scene;
+  const ns={...sc,...(a.scene||{}),maya:{...sc.maya,...(a.maya||{})},patient:{...sc.patient,...(a.patient||{})},props:a.props||sc.props};
+  const host=$('sceneHost'),layer=document.createElement('div');layer.className='layer xfade';layer.innerHTML=sceneSVG(ns);host.appendChild(layer);
+  setTimeout(()=>{[...host.children].slice(0,-1).forEach(c=>c.remove());layer.className=''},600);
+  if(a.sfx==='siren')setTimeout(SFX.siren,400);if(a.sfx==='zap')setTimeout(SFX.zap,150);if(a.sfx==='whoosh')SFX.whoosh();
+  if(a.flash){const w=$('wflash');w.classList.remove('go');void w.offsetWidth;w.classList.add('go')}
+}
+function drop(cardId,zoneId){
+  if(locked)return;locked=true;clearInterval(timerId);
+  $('sceneWrap').classList.remove('armed');$('vignette').className='vignette';
+  const step=stepNow(),card=step.cards.find(c=>c.id===cardId);
+  const good=cardId===step.ans[0]&&zoneId===step.ans[1];
+  const rightCard=step.cards.find(c=>c.id===step.ans[0]),rightZone=step.zones.find(z=>z.id===step.ans[1]);
+  document.querySelectorAll('.card').forEach(c=>{c.disabled=true;c.classList.toggle('used',c.dataset.card!==cardId);c.classList.toggle('selected',c.dataset.card===cardId)});
+  if(card)SFX.drop();
+  run.total++;let pts=0;const secs=(performance.now()-stepStart)/1000;
+  if(good){run.streak++;run.correct++;const mult=Math.min(1+(run.streak-1)*.5,3);pts=Math.round((100+Math.round(50*Math.max(0,timeLeft)/TIME))*mult);run.score+=pts;
+    setTimeout(()=>{SFX.good();pop('+'+pts)},120);burst(...(step.burst||[400,225]),'sparkle',34);
+    if(secs<4)award('speedy');if(run.streak>=5)award('streak5');
+    P.totalCorrect=(P.totalCorrect||0)+1;save();if(P.totalCorrect>=15)award('myth');
+  }else{run.streak=0;run.lives--;setTimeout(SFX.bad,100);const w=$('sceneWrap');w.classList.remove('shake');void w.offsetWidth;w.classList.add('shake');if(step.burst)burst(...step.burst,'bad',14)}
+  run.results[run.st]=good;renderDots();
+  playAfter(step,good);
+  srv('/api/event',{player:P.name||'',level:run.lv.id,step:run.st,card:cardId||'timeout',zone:zoneId||'',correct:good,ms:Math.round(secs*1000)});
+  const why=card?(step.combos&&step.combos[cardId+':'+zoneId])||card.why:'Time ran out. In a real emergency, hesitation costs lives. '+rightCard.why;
+  run.log.push({q:step.say,ok:good,picked:card?`${card.t}${zoneId?' → '+(step.zones.find(z=>z.id===zoneId)||{}).label:''}`:'(ran out of time)',right:`${rightCard.t} → ${rightZone.label}`,why:rightCard.why});
+  updateHud(!good);
+  showFeedback(good,good?(run.streak>1?`Correct! ${run.streak} in a row`:'Correct!'):(card?'Not quite':'Too slow'),why,pts,good?'':`<p style="margin-top:8px"><b>Right call:</b> ${rightCard.e} ${rightCard.t} → ${rightZone.label}</p>`,!good);
+}
+function showFeedback(good,title,why,pts,extra,offerCoach){
+  const fb=$('feedback');fb.className='feedback '+(good?'good':'bad');
+  const last=run.st>=run.lv.steps.length-1||run.lives<=0;
+  fb.innerHTML=`${pts?`<span class="pts">+${pts}</span>`:''}<h3>${title}</h3><p>${why}</p>${extra||''}<div class="fb-row"><button class="btn dark" id="next">${last?'See results':'Next'}</button>${offerCoach?'<button class="btn coach" id="whyBtn">💬 Ask Coach why</button>':''}</div>`;
+  $('next').onclick=()=>{SFX.click();run.st++;nextStep()};
+  if(offerCoach)$('whyBtn').onclick=()=>{const l=run.log[run.log.length-1];openChat(`In the ${run.lv.title} scenario ("${l.q}") I picked "${l.picked}", but the right call was "${l.right}". Explain why, and give me a trick to remember it.`)};
+  setTimeout(()=>{$('next').focus({preventScroll:true});fb.scrollIntoView({behavior:REDUCED?'auto':'smooth',block:'nearest'})},50);
+}
+
+/* ---------- CPR rhythm with metronome ---------- */
+let metro=null;
+function startRhythm(){
+  $('trayBox').classList.add('hidden');$('rhythm').classList.remove('hidden');$('timer').classList.add('hidden');
+  clearInterval(timerId);cpr={taps:[],done:false};
+  $('bpm').textContent='--';$('needle').style.left='0%';$('cprCount').textContent='0';$('pushBtn').disabled=false;
+  startMetro();$('pushBtn').focus({preventScroll:true});
+  $('rhSrcHost').innerHTML=srcRowHTML('rhSrc');$('rhPanel').classList.add('hidden');$('rhMsg').textContent='';
+  wireSrcRow('rhSrc',()=>press(),{panel:$('rhPanel'),video:$('rhVid'),canvas:$('rhWave')},$('rhMsg'),m=>{if(cpr){cpr.source=m;cpr.taps=[];$('cprCount').textContent='0'}});
+}
+function startMetro(){stopMetro();let n=0;metro=setInterval(()=>{if(!cpr||cpr.done)return stopMetro();
+  if($('metroToggle').checked){SFX.tick(n%2===0);const r=$('beatRing');r.classList.remove('go');void r.offsetWidth;r.classList.add('go')}n++},60000/110)}
+function stopMetro(){clearInterval(metro);metro=null}
+function press(){
+  if(!cpr||cpr.done)return;ac();SFX.push();
+  const w=$('sceneWrap');w.classList.add('pushing');$('pushBtn').classList.add('push');setTimeout(()=>{w.classList.remove('pushing');$('pushBtn').classList.remove('push')},90);
+  cpr.taps.push(performance.now());const n=cpr.taps.length;$('cprCount').textContent=n;
+  if(n>=2){const r=cpr.taps.slice(-4),bpm=Math.round(60000/((r[r.length-1]-r[0])/(r.length-1)));$('bpm').textContent=bpm;$('needle').style.left=`calc(${Math.min(160,Math.max(60,bpm))-60}% - 3px)`;
+    if(n%5===0)burst(432,334,bpm>=100&&bpm<=120?'sparkle':'bad',6)}
+  if(n>=30)endRhythm();
+}
+function endRhythm(){
+  cpr.done=true;stopMetro();$('pushBtn').disabled=true;senseStop();
+  srv('/api/cpr',{player:P.name||'',session:Math.random().toString(36).slice(2,10),source:cpr.source||'tap',taps:cpr.taps.map(t=>Math.round(performance.timeOrigin+t))});
+  const iv=[];for(let i=1;i<cpr.taps.length;i++)iv.push(60000/(cpr.taps[i]-cpr.taps[i-1]));
+  const inZ=iv.filter(b=>b>=100&&b<=120).length,near=iv.filter(b=>b>=90&&b<=130).length;
+  const avg=Math.round(iv.reduce((a,b)=>a+b,0)/iv.length),acc=Math.round((inZ+(near-inZ)*.5)/iv.length*100),good=acc>=50;
+  run.total++;const pts=Math.round(acc*3);run.score+=pts;
+  if(good){run.correct++;run.streak++;SFX.good();burst(432,334,'confetti',50)}else{run.streak=0;run.lives--;SFX.bad()}
+  if(acc>=80)award('pulse');if(pts)pop('+'+pts);
+  run.results[run.st]=good;renderDots();playAfter(stepNow(),good);
+  run.log.push({q:'CPR rhythm',ok:good,picked:`average ${avg}/min, ${acc}% on beat`,right:'Steady compressions at 100–120 per minute',why:'Push hard and fast in the center of the chest.'});updateHud(!good);
+  const tip=avg<100?'Too slow. Speed up and lock onto the beat.':avg>120?'Too fast. The heart needs time to refill between pushes, so let the chest come all the way back up.':'Great rhythm! Real CPR is exhausting, so swap rescuers every 2 minutes if you can.';
+  showFeedback(good,`${acc}% on beat, average ${avg}/min`,tip,pts,'',!good);
+}
+$('pushBtn').addEventListener('pointerdown',e=>{e.preventDefault();press()});
+$('sceneHost').addEventListener('pointerdown',()=>{if(cpr&&!cpr.done)press()});
+document.addEventListener('keydown',e=>{if(cpr&&!cpr.done&&!$('play').classList.contains('hidden')&&(e.code==='Space'||e.code==='Enter')&&!$('chat').contains(document.activeElement)){e.preventDefault();press()}});
+
+/* ---------- level complete ---------- */
+function finishLevel(){
+  clearInterval(timerId);stopMetro();cpr=null;
+  const lv=run.lv,passed=run.lives>0,miss=run.results.filter(r=>r===false).length;
+  const stars=passed?(miss===0?3:miss===1?2:1):0;
+  const prev=P.stars[lv.id]||0,prevTotal=totalStars();
+  if(stars>prev)P.stars[lv.id]=stars;if(run.score>(P.best[lv.id]||0))P.best[lv.id]=run.score;save();
+  if(passed){award('first');if(stars===3)award('flawless');if(lv.id==='overdose')award('naloxone');if(['stroke','seizure','allergy','bleed'].every(id=>P.stars[id]||id===lv.id))award('bodymind');if(LEVELS.every(l=>P.stars[l.id]))award('hero')}
+  if(totalStars()>prevTotal)checkOutfits();
+  if(passed)srv('/api/session',{player:P.name||'',level:lv.id,score:run.score,stars});
+  const nextI=run.li+1<LEVELS.length?run.li+1:null;
+  const starSvg=(on,i)=>`<svg viewBox="-12 -12 24 24" class="${on?'on':''}" style="animation-delay:${.3+i*.35}s"><path d="M0 -10 L3 -3 L10 -3 L4.5 1.5 L6.5 9 L0 4.5 L-6.5 9 L-4.5 1.5 L-10 -3 L-3 -3Z" fill="${on?'#FFC72C':'var(--line)'}" stroke="${on?'#b98a00':'none'}" stroke-width="1"/></svg>`;
+  const mistakes=run.log.filter(l=>!l.ok);
+  modal(`<div class="done-top">
+    <div style="font-size:15px;color:var(--muted)">${lv.place}</div>
+    <h2>${passed?(stars===3?'Textbook response!':'Patient saved!'):'Out of hearts'}</h2>
+    <div class="stars">${[0,1,2].map(i=>starSvg(i<stars,i)).join('')}</div>
+    <div class="score">${run.score} pts</div>
+    <p style="margin:0;color:var(--muted)">${run.correct} of ${run.total} calls right${P.best[lv.id]===run.score&&run.score>0?', new personal best':''}.</p></div>
+    ${mistakes.length?`<h3 style="margin-top:18px;font-size:24px">What to remember</h3><div class="review">${mistakes.map(l=>`<div class="no"><b>${l.right}</b><br>${l.why}</div>`).join('')}</div>`:''}
+    <div class="fb-row" style="justify-content:center;margin-top:20px">
+      ${passed&&nextI!==null&&unlocked(nextI)?`<button class="btn dark" id="mNext">Next: ${LEVELS[nextI].place}</button>`:''}
+      <button class="btn ghosty" id="mRetry">Play again</button>
+      <button class="btn ghosty" id="mMap">Campus map</button>
+      ${mistakes.length?'<button class="btn coach" id="mCoach">💬 Review with Coach</button>':''}
+      ${passed&&window.SERVER&&SERVER.solana?'<button class="btn ghosty" id="mCert">🔗 Get verifiable certificate</button>':''}
+      ${window.SERVER&&SERVER.db?'<button class="btn ghosty" id="mLead">🏆 Leaderboard</button>':''}
+    </div>`,false);
+  if(passed){SFX.fanfare();[0,1,2].forEach(i=>{if(i<stars)setTimeout(()=>SFX.star(i),300+i*350)});setTimeout(()=>burst(400,120,'confetti',70),200)}
+  $('mRetry').onclick=()=>{closeModal();startLevel(run.li)};
+  $('mMap').onclick=()=>{closeModal();goMap()};
+  if($('mNext'))$('mNext').onclick=()=>{closeModal();startLevel(nextI)};
+  if($('mCert'))$('mCert').onclick=()=>mintCert(lv,stars,run.score);
+  if($('mLead'))$('mLead').onclick=()=>openInsights();
+  if($('mCoach'))$('mCoach').onclick=()=>{closeModal();openChat(`I just played the ${lv.title} level. My mistakes:\n${mistakes.map(m=>`- Picked "${m.picked}" instead of "${m.right}"`).join('\n')}\nQuiz me on these with one quick question at a time.`)};
+}
+function goMap(){clearInterval(timerId);stopMetro();senseStop();cpr=null;run=null;renderMap();show('map');updateHud()}
+
+/* ---------- modals: wardrobe, badges, settings ---------- */
+function modal(html,closable=true){$('modalHost').innerHTML=`<div class="modal" id="modalBg"><div class="box" role="dialog">${closable?'<button class="x" id="mx" aria-label="Close">✕</button>':''}${html}</div></div>`;
+  if(closable){$('mx').onclick=closeModal;$('modalBg').onclick=e=>{if(e.target.id==='modalBg')closeModal()}}}
+function closeModal(){$('modalHost').innerHTML='';if(lab){clearInterval(lab.metro);lab=null;senseStop()}}
+function openWardrobe(){
+  const ts=totalStars();
+  modal(`<h2>Truman's wardrobe</h2><p style="color:var(--muted);margin:4px 0 0">You have ${ts} ⭐. Earn stars to unlock new looks.</p>
+  <div class="grid-items">${OUTFITS.map(o=>{const open=ts>=o.need||P.demo;return `<button class="item${P.outfit===o.id?' on':''}${open?'':' locked'}" data-o="${o.id}" ${open?'':'aria-disabled="true"'}>
+   <svg viewBox="120 150 140 240">${mayaSVG({x:190},o).replace('id="mayaG"','')}</svg><h3>${o.name}</h3><p>${open?(P.outfit===o.id?'Wearing':o.note):`🔒 ${o.need} stars`}</p></button>`}).join('')}</div>`);
+  document.querySelectorAll('.item[data-o]').forEach(b=>b.onclick=()=>{const o=OUTFITS.find(x=>x.id===b.dataset.o);if(totalStars()<o.need&&!P.demo){SFX.bad();return}P.outfit=o.id;save();SFX.unlock();openWardrobe();renderMap();$('fabAv').innerHTML=coachFace});
+}
+function openBadges(){
+  modal(`<h2>Badges</h2><p style="color:var(--muted);margin:4px 0 0">${P.badges.length} of ${BADGES.length} earned.</p>
+  <div class="grid-items">${BADGES.map(b=>{const on=P.badges.includes(b.id);return `<div class="item${on?'':' locked'}"><div class="badge-ic">${b.ic}</div><h3>${b.name}</h3><p>${b.desc}</p></div>`}).join('')}</div>`);
+}
+function openSettings(){
+  modal(`<h2>Settings</h2>
+  <div class="settings-row"><div><b>Sound effects</b><p>Chimes, heartbeat and the CPR beat.</p></div><input type="checkbox" class="switch" id="sSound" ${P.sound?'checked':''}></div>
+  <div class="settings-row"><div><b>Truman's voice</b><p>Reads Truman's lines aloud${window.SERVER&&SERVER.voice?' with an ElevenLabs voice':' with your browser\'s voice'}.</p></div><input type="checkbox" class="switch" id="sVoice" ${P.voice?'checked':''}></div>
+  <div class="settings-row"><div><b>Demo mode</b><p>Unlocks every level and outfit, handy for judges.</p></div><input type="checkbox" class="switch" id="sDemo" ${P.demo?'checked':''}></div>
+  <div class="settings-row"><div><b>Reset progress</b><p>Clears stars, badges and outfits on this device.</p></div><button class="btn ghosty" id="sReset">Reset</button></div>`);
+  $('sSound').onchange=e=>{P.sound=e.target.checked;save();syncSound()};
+  $('sVoice').onchange=e=>{P.voice=e.target.checked;save();if(P.voice)speak('Hi, I\'m Truman. Let\'s save some lives.')};
+  $('sDemo').onchange=e=>{P.demo=e.target.checked;save();renderMap()};
+  $('sReset').onclick=()=>{if(!confirm('Reset all progress on this device?'))return;P={...DEF,seenOutfits:['responder']};save();closeModal();renderMap();updateHud();toast('🧹','Progress reset','Fresh start.')};
+}
+function syncSound(){$('soundBtn').textContent=P.sound?'🔊':'🔇';$('soundBtn').setAttribute('aria-label',P.sound?'Sound on':'Sound off')}
+/* =========================================================
+   Coach Pulse — AI chat
+   askAI() is the ONE function to swap when you connect your
+   own bot. Right now it tries, in order:
+     1. BOT.endpoint  → your backend (e.g. a /api/chat route that
+        calls Gemini, OpenAI, Claude…). Keep API keys on the server.
+     2. Claude via this page's artifact runtime ("sample").
+     3. Offline tips (keyword matching) so the demo never breaks.
+   ========================================================= */
+const BOT={
+  endpoint:'',            // e.g. 'https://your-site.com/api/chat'  → POST {system, messages:[{role,content}]} → {reply}
+  name:'Coach Pulse'
+};
+const SYSTEM=`You are Coach Pulse, the friendly first aid coach inside "Truman on Call", a first aid training game for college students.
+Rules:
+- Follow current guidance: 2025 American Heart Association CPR/ECC guidelines and American Red Cross first aid. Examples: adult CPR 100-120 compressions/min, at least 2 in (5 cm) deep, full recoil; choking in conscious adults = alternate 5 back blows and 5 abdominal thrusts; suspected opioid overdose = call 911, give naloxone, CPR if not breathing normally, don't delay CPR.
+- Keep answers short: under 120 words, plain language, numbered steps only when giving steps. Use one memorable trick when it helps.
+- If the user describes an emergency happening NOW, start with "Call 911 now" and give only the immediate life-saving steps.
+- Don't diagnose or give medication doses beyond what's on a naloxone/first aid label. Suggest a hands-on certified course when relevant.
+- If someone mentions wanting to hurt themselves, respond with care and share the 988 Suicide & Crisis Lifeline (call or text 988 in the US).
+- Stay on health, safety and first aid topics; gently steer back otherwise.`;
+const OFFLINE=[
+  [/nose|nosebleed/i,'Nosebleed: sit up and lean forward, then pinch the soft part of the nose (just below the bony bridge) for 10–15 minutes without letting go to check. Don\'t tilt the head back. Get help if it lasts more than 20–30 minutes or after a hard hit.'],
+  [/burn|scald/i,'Burns: cool under cool running water for at least 10 minutes (ideally 20). Remove rings and tight items early. Cover loosely with cling film or a non-stick dressing. No ice, butter or toothpaste. Get care for large or deep burns, or burns to the face, hands, feet or genitals.'],
+  [/chok|heimlich|back blow/i,'Choking (adult or child, conscious): if they can cough, encourage coughing. If they can\'t cough, speak or breathe, alternate 5 firm back blows between the shoulder blades with 5 abdominal thrusts. Repeat until it comes out. If they go unresponsive, lower them down, call 911 and start CPR.'],
+  [/narcan|naloxone|overdose|opioid|fentanyl/i,'Suspected opioid overdose: shout and rub the breastbone. If no response, call 911 and get naloxone. Nasal spray: tip in one nostril, press firmly. If they aren\'t breathing normally, start CPR; don\'t delay it for naloxone. Give a second dose after 2–3 minutes if needed, and stay with them because naloxone can wear off.'],
+  [/aed|defib/i,'AED: turn it on and follow the voice prompts. Stick the pads on the bare chest as pictured. Keep CPR going until it tells you to stand clear, then resume right after any shock.'],
+  [/cpr|compress|stayin|chest/i,'Hands-only CPR: call 911, then push hard and fast in the center of the chest: 100–120 per minute, at least 2 inches (5 cm) deep, letting the chest fully rise each time. The beat of "Stayin\' Alive" is about right. Don\'t stop until an AED or help arrives.'],
+  [/bleed|blood|cut|wound/i,'Heavy bleeding: press firmly and directly with a clean cloth. If blood soaks through, add layers on top; don\'t lift the first one. For life-threatening limb bleeding, a tourniquet 2–3 inches above the wound may be needed. Call 911 for bleeding that won\'t stop.'],
+  [/head|concuss/i,'Head injury: call 911 for vomiting, confusion, memory loss, seizures, unequal pupils, worsening headache, or if they were knocked out. Keep them still, control bleeding with gentle pressure, and watch their breathing.'],
+  [/stroke|face droop/i,'Stroke, think BE FAST: Balance loss, Eyes (vision change), Face drooping, Arm weakness, Speech trouble, Time to call 911. Note when symptoms started.'],
+  [/seizure/i,'Seizure: keep them safe. Move hard objects away, cushion the head, don\'t hold them down and never put anything in their mouth. Time it. Call 911 if it lasts over 5 minutes, they\'re injured, pregnant, or don\'t wake up. Afterwards, roll them onto their side.'],
+  [/allerg|epipen|anaphyl/i,'Severe allergic reaction (trouble breathing, swelling, hives): call 911 and help them use their epinephrine auto-injector in the outer thigh. A second dose may be needed if no improvement after 5–15 minutes.'],
+  [/recovery position/i,'Recovery position: for someone unresponsive but breathing normally. Roll them onto their side, top knee bent to stop them rolling, head tilted back slightly so the airway stays open. Keep checking their breathing.']
+];
+let chatHistory=[],chatBusy=false,sampleFn=undefined;
+async function getSample(){if(sampleFn!==undefined)return sampleFn;try{sampleFn=window.claude?await window.claude.use('sample'):null}catch(e){sampleFn=null}return sampleFn}
+async function askAI(history,onText){
+  const context=run?`\nGame context: the player is on the "${run.lv.title}" level (${run.lv.place}).`:'';
+  if(BOT.endpoint){
+    const r=await fetch(BOT.endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:SYSTEM+context,messages:history})});
+    const j=await r.json();return j.reply;
+  }
+  const sample=await getSample();
+  if(sample){
+    const turns=history.slice(-10).map(m=>({role:m.role,content:m.content}));
+    while(turns.length&&turns[0].role!=='user')turns.shift();
+    turns[0].content=`${SYSTEM}${context}\n\nPlayer: ${turns[0].content}`;
+    const {text}=await sample(turns,{modelTier:'quick',cache:false,onText:({text})=>onText(text)});return text;
+  }
+  const q=history[history.length-1].content;const hit=OFFLINE.find(([re])=>re.test(q));
+  return hit?hit[1]:'I\'m in offline mode right now, so I only know the basics: CPR, AEDs, choking, bleeding, head injuries, burns, nosebleeds, overdoses, strokes, seizures and allergic reactions. Try asking about one of those!';
+}
+const STRONG=/(isn'?t breathing|not breathing|stopped breathing|won'?t wake|unconscious|collapsed|turning blue|is dying)/i,URGENT=/(right now|happening|help me|what do i do|someone|my (friend|roommate|mom|dad|brother|sister|partner)|\b(he|she|they)('?s| is| are)\b)/i,TERM=/(overdos|chok|seizure|stroke|heart attack|bleeding|burn|allerg|can'?t breathe)/i;
+const isEmergency=t=>STRONG.test(t)||(URGENT.test(t)&&TERM.test(t));
+const CRISIS=/(suicid|kill myself|end my life|hurt myself|self[- ]harm)/i;
+function addMsg(role,text){const d=document.createElement('div');d.className='msg '+role;d.textContent=text;$('chatBody').appendChild(d);$('chatBody').scrollTop=1e9;return d}
+function renderChips(){const base=run?{head:'Why not peel off a soaked bandage?',nose:'Why lean forward, not back?',burn:'Why is ice bad for burns?',choke:'What changed in the 2025 choking guidelines?',cpr:'How deep should compressions be?',overdose:'How does naloxone work?',stroke:'Why no aspirin for a stroke?',seizure:'Why nothing in the mouth during a seizure?',allergy:'Why the outer thigh for an EpiPen?',bleed:'Where exactly does a tourniquet go?'}[run.lv.id]:null;
+  const chips=[base,'Quiz me on CPR','What\'s BE FAST for strokes?','What do I do during a seizure?','How do I use an EpiPen?'].filter(Boolean);
+  $('chips').innerHTML=chips.map(c=>`<button>${c}</button>`).join('');$('chips').querySelectorAll('button').forEach(b=>b.onclick=()=>sendChat(b.textContent))}
+async function openChat(prefill){
+  $('chat').classList.remove('hidden');$('fab').classList.add('hidden');SFX.click();
+  if(!$('chatBody').children.length){addMsg('bot',`Hi, I'm Coach Pulse 👋 Ask me anything about first aid, or tap "Ask Coach why" after a mistake and I'll explain it.`);}
+  renderChips();
+  const s=await getSample();$('chatMode').textContent=BOT.endpoint?`AI first aid coach, powered by ${window.SERVER&&SERVER.chat==='snowflake'?'Snowflake Cortex':window.SERVER&&SERVER.chat==='gemini'?'Gemini':'your bot'}`:s?'AI first aid coach, powered by Claude':'Offline tips mode';
+  if(prefill)sendChat(prefill);else setTimeout(()=>$('chatText').focus(),100);
+}
+function closeChat(){$('chat').classList.add('hidden');$('fab').classList.remove('hidden')}
+async function sendChat(text){
+  text=(text||$('chatText').value).trim();if(!text||chatBusy)return;$('chatText').value='';
+  addMsg('me',text);chatHistory.push({role:'user',content:text});award('curious');
+  if(CRISIS.test(text))addMsg('alert','You matter. If you\'re thinking about hurting yourself, call or text 988 (Suicide & Crisis Lifeline, US) right now, or 911 if you\'re in danger.');
+  else if(isEmergency(text))addMsg('alert','🚨 If this is happening right now, call 911 first. They\'ll coach you through it on the phone.');
+  chatBusy=true;const d=addMsg('bot','');d.innerHTML='<span class="typing"><span></span><span></span><span></span></span>';
+  try{const reply=await askAI(chatHistory,t=>{d.textContent=t;$('chatBody').scrollTop=1e9});d.textContent=reply;chatHistory.push({role:'assistant',content:reply})}
+  catch(e){const hit=OFFLINE.find(([re])=>re.test(text));d.textContent=e&&e.code==='not_granted'?'AI answers are switched off for this page, so here\'s an offline tip: '+(hit?hit[1]:'ask about CPR, choking, bleeding, burns or overdoses.'):(hit?hit[1]:'I couldn\'t reach the AI just now. Try again in a moment.');if(e&&e.code==='not_granted')sampleFn=null}
+  chatBusy=false;$('chatBody').scrollTop=1e9;
+}
+
+/* =========================================================
+   Real compressions: phone accelerometer · webcam · USB sensor
+   All three feed one detector that turns a wobbly signal into
+   "one compression happened at time t". Scoring is shared with
+   the tap version, so a sensor push counts exactly like a tap.
+   ========================================================= */
+const Sense={mode:'tap',active:false,stops:[],wave:[],raf:0,facing:'user'};
+const SENSE_INFO={
+  motion:{ic:'📱',name:'Phone motion',how:'Hold your phone flat on your palm, put your other hand on top, and push into a firm pillow or couch cushion.',min:2.2},
+  cam:{ic:'📷',name:'Webcam',how:'Put the camera to your side so it sees your arms and the pillow. Push straight down.',min:2.5},
+  serial:{ic:'🔌',name:'USB sensor',how:'Put the force sensor under the pillow and connect the board over USB (Chrome or Edge). Wiring is in /hardware.',min:40}
+};
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+function makeDetector(minRange,onPush){
+  const hist=[];let ema=null,state='up',last=0;
+  return{feed(v,t){ema=ema==null?v:ema*.55+v*.45;hist.push([t,ema]);while(hist.length&&t-hist[0][0]>1800)hist.shift();
+    let lo=Infinity,hi=-Infinity;for(const h of hist){if(h[1]<lo)lo=h[1];if(h[1]>hi)hi=h[1]}
+    const range=hi-lo;
+    if(range>=minRange){const mid=(hi+lo)/2,hy=range*.18;
+      if(state==='up'&&ema>mid+hy)state='down';
+      else if(state==='down'&&ema<mid-hy){state='up';if(t-last>260){const iv=t-last;last=t;onPush(t,range,iv)}}}
+    return ema}};
+}
+function senseSignal(v,push){Sense.wave.push([performance.now(),v,push?1:0]);if(Sense.wave.length>600)Sense.wave.splice(0,200)}
+function drawWave(cv){
+  if(!cv||!Sense.active)return;const r=cv.getBoundingClientRect(),dpr=devicePixelRatio||1;
+  if(cv.width!==Math.round(r.width*dpr)){cv.width=Math.round(r.width*dpr);cv.height=Math.round(r.height*dpr)}
+  const g=cv.getContext('2d'),W=cv.width,H=cv.height,now=performance.now(),pts=Sense.wave.filter(p=>now-p[0]<4000);
+  g.clearRect(0,0,W,H);if(pts.length<2){Sense.raf=requestAnimationFrame(()=>drawWave(cv));return}
+  let lo=Infinity,hi=-Infinity;pts.forEach(p=>{lo=Math.min(lo,p[1]);hi=Math.max(hi,p[1])});const span=Math.max(hi-lo,1e-6);
+  g.strokeStyle='#1FA36B';g.lineWidth=2.5*dpr;g.beginPath();
+  pts.forEach((p,i)=>{const x=W-(now-p[0])/4000*W,y=H-((p[1]-lo)/span*.8+.1)*H;i?g.lineTo(x,y):g.moveTo(x,y)});g.stroke();
+  g.fillStyle='#FFC72C';pts.filter(p=>p[2]).forEach(p=>{const x=W-(now-p[0])/4000*W;g.fillRect(x-1.5*dpr,0,3*dpr,H)});
+  Sense.raf=requestAnimationFrame(()=>drawWave(cv));
+}
+async function senseStop(){Sense.active=false;cancelAnimationFrame(Sense.raf);const s=Sense.stops.splice(0);for(const f of s){try{await f()}catch(e){}}Sense.wave=[];Sense.mode='tap'}
+// onPush(t, info) · els = {video, canvas}
+async function senseStart(mode,onPush,els={}){
+  await senseStop();if(mode==='tap')return;
+  Sense.mode=mode;Sense.active=true;
+  const det=makeDetector(SENSE_INFO[mode].min,(t,range,iv)=>{
+    let depth=null;if(mode==='motion'&&iv>250&&iv<1500){const w=2*Math.PI/(iv/1000);depth=Math.min(12,range/(w*w)*100)}
+    senseSignal(Sense.lastV||0,true);onPush(t,{depth,iv})});
+  const feed=v=>{Sense.lastV=v;det.feed(v,performance.now());senseSignal(v,false)};
+  if(mode==='motion'){
+    if(!('DeviceMotionEvent' in window))throw new Error('No motion sensor here. Open the game on your phone.');
+    if(typeof DeviceMotionEvent.requestPermission==='function'){const r=await DeviceMotionEvent.requestPermission();if(r!=='granted')throw new Error('Motion access was denied. Allow it in your browser settings.')}
+    let got=false,base=null;
+    const h=e=>{let v=null;if(e.acceleration&&e.acceleration.z!=null)v=e.acceleration.z;
+      else if(e.accelerationIncludingGravity&&e.accelerationIncludingGravity.z!=null){const z=e.accelerationIncludingGravity.z;base=base==null?z:base*.97+z*.03;v=z-base}
+      if(v==null)return;got=true;feed(v)};
+    window.addEventListener('devicemotion',h);Sense.stops.push(()=>window.removeEventListener('devicemotion',h));
+    await sleep(1500);if(!got){await senseStop();throw new Error('No motion data. Use a phone, open the game over HTTPS, and allow motion access.')}
+  }else if(mode==='cam'){
+    if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia)throw new Error('Camera isn\'t available here. Open the game from its own HTTPS website.');
+    let stream;try{stream=await navigator.mediaDevices.getUserMedia({video:{width:320,height:240,facingMode:Sense.facing},audio:false})}
+    catch(e){await senseStop();throw new Error(e.name==='NotAllowedError'?'Camera permission was denied.':'Couldn\'t open the camera here. Try the game on its own website.')}
+    const v=els.video;v.srcObject=stream;v.muted=true;v.playsInline=true;await v.play().catch(()=>{});
+    const cv=document.createElement('canvas');cv.width=64;cv.height=120;const g=cv.getContext('2d',{willReadFrequently:true});
+    let prev=null,pos=0,loopId=0;
+    const loop=()=>{if(!Sense.active)return;
+      if(v.readyState>=2){g.drawImage(v,0,0,64,120);const d=g.getImageData(0,0,64,120).data,prof=new Float32Array(120);
+        for(let y=0;y<120;y++){let sum=0;for(let x=12;x<52;x++){const i=(y*64+x)*4;sum+=d[i]*.3+d[i+1]*.59+d[i+2]*.11}prof[y]=sum/40}
+        if(prev){const err=sh=>{let e=0;for(let y=14;y<106;y++)e+=Math.abs(prof[y]-prev[y+sh]);return e};
+          let best=0,bestE=Infinity;const E={};for(let sh=-10;sh<=10;sh++){E[sh]=err(sh);if(E[sh]<bestE){bestE=E[sh];best=sh}}
+          let sub=best;if(best>-10&&best<10){const a=E[best-1],b=E[best],c=E[best+1],den=a-2*b+c;if(den>0)sub=best+(a-c)/(2*den)}
+          pos=pos*.99+sub;feed(pos)}
+        prev=prof}
+      loopId=requestAnimationFrame(loop)};
+    loop();Sense.stops.push(()=>{cancelAnimationFrame(loopId);stream.getTracks().forEach(t=>t.stop());v.srcObject=null});
+  }else if(mode==='serial'){
+    if(!('serial' in navigator))throw new Error('USB sensors need Chrome or Edge on a laptop (Web Serial).');
+    let port;try{port=await navigator.serial.requestPort()}catch(e){await senseStop();throw new Error('No sensor selected.')}
+    await port.open({baudRate:115200});
+    const reader=port.readable.pipeThrough(new TextDecoderStream()).getReader();let buf='',alive=true;
+    Sense.stops.push(async()=>{alive=false;try{await reader.cancel()}catch(e){}try{await port.close()}catch(e){}});
+    (async()=>{while(alive){const {value,done}=await reader.read();if(done)break;buf+=value;let i;
+      while((i=buf.indexOf('\n'))>=0){const n=parseFloat(buf.slice(0,i));buf=buf.slice(i+1);if(!isNaN(n))feed(n)}}})().catch(()=>{});
+  }
+  if(els.canvas)drawWave(els.canvas);
+}
+function srcRowHTML(id){return `<div class="src-row" id="${id}">${[['tap','👆','Tap'],['motion','📱','Phone'],['cam','📷','Webcam'],['serial','🔌','USB sensor']].map(([k,i,n])=>`<button data-src="${k}" class="${k==='tap'?'on':''}">${i} ${n}</button>`).join('')}</div>`}
+function wireSrcRow(rowId,onPush,els,msgEl,onMode){
+  $(rowId).querySelectorAll('button').forEach(b=>b.onclick=async()=>{
+    SFX.click();const mode=b.dataset.src;
+    $(rowId).querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));
+    els.panel.classList.toggle('hidden',mode==='tap');els.video.classList.toggle('hidden',mode!=='cam');
+    msgEl.textContent=mode==='tap'?'':SENSE_INFO[mode].how+' Starting…';
+    try{await senseStart(mode,onPush,els);if(mode!=='tap')msgEl.textContent=SENSE_INFO[mode].how+' Ready: start pushing.';onMode&&onMode(mode)}
+    catch(e){msgEl.textContent='⚠️ '+e.message;$(rowId).querySelectorAll('button').forEach(x=>x.classList.toggle('on',x.dataset.src==='tap'));els.video.classList.add('hidden');onMode&&onMode('tap')}
+  });
+}
+
+/* ---------- CPR Lab: practice on a pillow with real motion ---------- */
+let lab=null;
+function openLab(){
+  modal(`<h2>CPR Lab</h2><p style="color:var(--muted);margin:4px 0 10px">Practice real compressions on a pillow. Pick how we should measure you, follow the beat, and do 30 pushes.</p>
+  ${srcRowHTML('labSrc')}
+  <div class="sense hidden" id="labPanel"><video id="labVid" class="hidden" playsinline muted></video><canvas id="labWave"></canvas></div>
+  <p class="sense-msg" id="labMsg">Choose Phone, Webcam or USB sensor. Tap mode works anywhere.</p>
+  <div class="lab-stats">
+    <div><b id="labCount">0</b><small>of 30</small></div>
+    <div><b id="labBpm">--</b><small>per minute</small></div>
+    <div><b id="labZone">--</b><small>in 100–120 zone</small></div>
+    <div><b id="labDepth">--</b><small>est. depth (phone)</small></div>
+  </div>
+  <div class="lab-coach" id="labCoach">Get ready…</div>
+  <div class="push-wrap" style="width:120px;height:120px"><div class="beat" id="labBeat"></div><button class="push-btn" id="labPush" style="font-size:26px">PUSH</button></div>
+  <div class="rh-opts"><label class="toggle"><input type="checkbox" class="switch" id="labMetro" checked> Guide beat (110/min)</label></div>`);
+  lab={taps:[],depths:[],mode:'tap',done:false,metro:null};
+  const els={panel:$('labPanel'),video:$('labVid'),canvas:$('labWave')};
+  wireSrcRow('labSrc',(t,info)=>labPush(info),els,$('labMsg'),m=>{lab.mode=m;lab.taps=[];lab.depths=[];labUpdate()});
+  $('labPush').addEventListener('pointerdown',e=>{e.preventDefault();labPush({})});
+  let n=0;lab.metro=setInterval(()=>{if(!$('labBeat')){clearInterval(lab.metro);senseStop();return}if($('labMetro').checked&&!lab.done){SFX.tick(n%2===0);const r=$('labBeat');r.classList.remove('go');void r.offsetWidth;r.classList.add('go')}n++},60000/110);
+}
+function labPush(info){
+  if(!lab||lab.done||!$('labCount'))return;SFX.push();
+  const b=$('labPush');b.classList.add('push');setTimeout(()=>b&&b.classList.remove('push'),90);
+  lab.taps.push(performance.now());if(info&&info.depth)lab.depths.push(info.depth);labUpdate();
+  if(lab.taps.length>=30)labFinish();
+}
+function labStats(){const iv=[];for(let i=1;i<lab.taps.length;i++)iv.push(60000/(lab.taps[i]-lab.taps[i-1]));
+  const recent=iv.slice(-4),bpm=recent.length?Math.round(recent.reduce((a,b)=>a+b,0)/recent.length):null;
+  const zone=iv.length?Math.round(iv.filter(b=>b>=100&&b<=120).length/iv.length*100):null;
+  const dep=lab.depths.slice(-4),depth=dep.length?dep.reduce((a,b)=>a+b,0)/dep.length:null;return{iv,bpm,zone,depth}}
+function labUpdate(){const {bpm,zone,depth}=labStats();
+  $('labCount').textContent=lab.taps.length;$('labBpm').textContent=bpm??'--';$('labZone').textContent=zone==null?'--':zone+'%';
+  $('labDepth').textContent=depth==null?'--':depth.toFixed(1)+' cm';
+  let c='Push hard and fast, center of the chest.';
+  if(bpm){c=bpm<100?'⬆️ Faster! Lock onto the beat.':bpm>120?'⬇️ A little slower, let the chest come all the way up.':'✅ Great rate, keep it steady.'}
+  if(depth!=null&&lab.mode==='motion'&&bpm)c+=depth<4?' Push deeper.':depth>7?' A bit gentler.':' Depth looks good.';
+  $('labCoach').textContent=c}
+function labFinish(){
+  lab.done=true;const {iv,zone}=labStats(),avg=Math.round(iv.reduce((a,b)=>a+b,0)/iv.length),sensor=lab.mode!=='tap';
+  if(zone>=70&&sensor)award('realcpr');zone>=70?SFX.fanfare():SFX.bad();
+  srv('/api/cpr',{player:P.name||'',session:'lab-'+Math.random().toString(36).slice(2,8),source:lab.mode,taps:lab.taps.map(t=>Math.round(performance.timeOrigin+t))});
+  $('labCoach').innerHTML=`<b>${zone}% on beat, average ${avg}/min${sensor?' measured by '+SENSE_INFO[lab.mode].name.toLowerCase():' (tap mode)'}.</b> ${zone>=70?'Nice work. Real CPR keeps going until help or an AED arrives, so swap with someone every 2 minutes.':'Try again and ride the beat.'} <button class="btn dark" id="labAgain" style="margin-left:6px">Go again</button>`;
+  $('labAgain').onclick=()=>{lab.taps=[];lab.depths=[];lab.done=false;labUpdate()};
+}
+
+/* =========================================================
+   Backend integrations (only active when served by server.js)
+   Tiger Data · Snowflake/Gemini · ElevenLabs · Solana
+   ========================================================= */
+window.SERVER=null;
+function srv(url,body){if(!SERVER)return;fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).catch(()=>{})}
+async function detectServer(){
+  if(!/^https?:$/.test(location.protocol))return;
+  try{const r=await fetch('/api/health',{cache:'no-store'});if(!r.ok)return;const h=await r.json();if(!h.ok)return;
+    SERVER=h;if(h.chat)BOT.endpoint='/api/chat';
+    if(h.db)$('insightsBtn').classList.remove('hidden');
+    if(h.voice&&P.voice===DEF.voice&&!P.voiceAsked){P.voice=true;P.voiceAsked=true;save()}
+    console.log('[maya] backend',h);
+  }catch(e){}
+}
+function askName(){
+  modal(`<h2>What should we call you?</h2><p style="color:var(--muted)">Your name goes on the campus leaderboard and your training certificates. Leave it blank to stay anonymous.</p>
+  <input id="nameIn" maxlength="30" value="${(P.name||'').replace(/"/g,'')}" placeholder="e.g. Truman" style="width:100%;font:inherit;font-size:20px;padding:12px 14px;border-radius:12px;border:2px solid var(--line);background:var(--paper);color:var(--ink)">
+  <div class="fb-row"><button class="btn dark" id="nameSave">Save</button><button class="btn ghosty" id="nameSkip">Stay anonymous</button></div>`);
+  $('nameIn').focus();
+  const done=v=>{P.name=v.trim().slice(0,30);save();closeModal()};
+  $('nameSave').onclick=()=>done($('nameIn').value);$('nameSkip').onclick=()=>done('');
+  $('nameIn').onkeydown=e=>{if(e.key==='Enter')done($('nameIn').value)};
+}
+async function mintCert(lv,stars,score){
+  if(!P.name){askName();return}
+  const b=$('mCert');b.disabled=true;b.textContent='Writing to Solana…';
+  try{const r=await fetch('/api/certificate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({player:P.name,level:lv.id,stars,score})});
+    const j=await r.json();if(!r.ok)throw new Error(j.error);
+    P.certs=[...(P.certs||[]),{level:lv.id,url:j.url,at:j.record.at}];save();SFX.unlock();
+    b.outerHTML=`<a class="btn coach" href="${j.url}" target="_blank" rel="noopener" style="text-decoration:none">✅ Certificate on-chain: view</a>`;
+    toast('🔗','Certificate recorded',`${lv.title} training, ${stars}★, verifiable on Solana.`);
+  }catch(e){b.disabled=false;b.textContent='🔗 Try again';toast('⚠️','Couldn\'t record certificate','Check the server\'s Solana balance.')}
+}
+async function openInsights(){
+  modal(`<h2>Live insights</h2><p style="color:var(--muted);margin:4px 0 12px">Every answer and every compression is stored as time-series data in Tiger Data.</p><div id="insBody">Loading…</div>`);
+  try{const [lb,ins]=await Promise.all([fetch('/api/leaderboard').then(r=>r.json()),fetch('/api/insights').then(r=>r.json())]);
+    const L=id=>(LEVELS.find(l=>l.id===id)||{}).title||id,card=(lv,c)=>{const l=LEVELS.find(x=>x.id===lv);for(const st of l?l.steps:[])for(const k of st.cards||[])if(k.id===c)return k.e+' '+k.t;return c};
+    $('insBody').innerHTML=`
+      <h3 style="font-size:24px">🏆 Leaderboard</h3>
+      <div class="review">${(lb.rows||[]).map((r,i)=>`<div class="${r.player===P.name?'ok':''}" style="background:var(--paper)"><b>${i+1}. ${r.player.replace(/</g,'')}</b> · ${r.score} pts · ${r.stars}★</div>`).join('')||'<div style="background:var(--paper)">No scores yet. Be the first!</div>'}</div>
+      <h3 style="font-size:24px;margin-top:18px">🧠 Myths players fall for most (7 days)</h3>
+      <div class="review">${(ins.myths||[]).map(m=>`<div class="no"><b>${card(m.level,m.card)}</b><br>${L(m.level)} · chosen ${m.times}×</div>`).join('')||'<div style="background:var(--paper)">Not enough data yet.</div>'}</div>
+      <h3 style="font-size:24px;margin-top:18px">🎯 Accuracy by emergency</h3>
+      <div class="review">${(ins.levels||[]).map(l=>`<div style="background:var(--paper)"><b>${L(l.level)}</b>: ${l.accuracy??0}% correct, ${l.avg_sec??'?'}s average decision, ${l.answers} answers</div>`).join('')||'<div style="background:var(--paper)">Not enough data yet.</div>'}</div>
+      ${ins.cpr&&ins.cpr.pushes?`<h3 style="font-size:24px;margin-top:18px">💓 CPR today</h3><div class="review"><div style="background:var(--paper)">${ins.cpr.pushes} compressions logged · average ${ins.cpr.avg_bpm}/min · ${ins.cpr.in_zone}% in the 100–120 zone</div>${(ins.bySource||[]).map(b=>`<div style="background:var(--paper)">${({tap:'👆 Tapped',motion:'📱 Phone on a pillow',cam:'📷 Webcam',serial:'🔌 Force sensor'})[b.source]||b.source}: ${b.pushes} pushes · ${b.avg_bpm}/min · ${b.in_zone}% in zone</div>`).join('')}</div>`:''}
+      <div class="fb-row"><button class="btn ghosty" id="nameEdit">${P.name?'Change name ('+P.name.replace(/</g,'')+')':'Add your name'}</button></div>`;
+    $('nameEdit').onclick=askName;
+  }catch(e){$('insBody').textContent='Couldn\'t load insights.'}
+}
+$('labBtn').onclick=()=>{SFX.click();openLab()};
+$('insightsBtn').onclick=()=>{SFX.click();openInsights()};
+detectServer();
+
+/* ---------- boot ---------- */
+$('startBtn').onclick=()=>{ac();SFX.fanfare();goMap();if(window.SERVER&&SERVER.db&&P.name===undefined)askName()};
+$('mapBtn').onclick=()=>{SFX.click();if(run&&!confirm('Leave this emergency? Progress on it will be lost.'))return;goMap()};
+$('soundBtn').onclick=()=>{P.sound=!P.sound;save();syncSound();ac();SFX.click()};
+$('settingsBtn').onclick=()=>{SFX.click();openSettings()};
+$('wardrobeBtn').onclick=()=>{SFX.click();openWardrobe()};
+$('badgesBtn').onclick=()=>{SFX.click();openBadges()};
+$('coachCard').onclick=()=>openChat();
+$('fab').onclick=()=>openChat();
+$('chatClose').onclick=closeChat;
+$('chatSend').onclick=()=>sendChat();
+$('chatText').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendChat()}});
+$('speakBtn').onclick=()=>{const was=P.voice;P.voice=true;speak($('bubble').textContent.replace(/^Truman/,''));P.voice=was};
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(!$('chat').classList.contains('hidden'))closeChat();else if($('modalHost').innerHTML&&$('mx'))closeModal()}});
+$('fabAv').innerHTML=coachFace;$('chatAv').innerHTML=coachFace;
+syncSound();renderTitle();updateHud();
+</script>
+</body>
+</html>
