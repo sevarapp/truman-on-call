@@ -16,7 +16,12 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const env = process.env;
 const app = express();
 app.use(express.json({ limit: '200kb' }));
-app.use(express.static(path.join(__dirname, 'public')));
+// Works whether files sit in folders (public/, db/) or all at the top level.
+// Only index.html is served, so server.js, package.json and .env are never exposed.
+const pick = (...c) => c.map(f => path.join(__dirname, f)).find(f => fs.existsSync(f));
+const INDEX = pick('public/index.html', 'index.html');
+const SCHEMA = pick('db/schema.sql', 'schema.sql');
+app.get(['/', '/index.html'], (_req, res) => INDEX ? res.sendFile(INDEX) : res.status(500).send('index.html not found'));
 
 const clean = (s, n = 40) => String(s ?? '').replace(/[^\p{L}\p{N} _.'-]/gu, '').slice(0, n);
 
@@ -25,7 +30,7 @@ let pool = null;
 if (env.DATABASE_URL) {
   pool = new pg.Pool({ connectionString: env.DATABASE_URL, ssl: { rejectUnauthorized: false }, max: 5 });
   // Continuous aggregates can't be created inside a transaction, so run statements one by one.
-  const sql = fs.readFileSync(path.join(__dirname, 'db/schema.sql'), 'utf8')
+  const sql = (SCHEMA ? fs.readFileSync(SCHEMA, 'utf8') : '')
     .split(/;\s*$/m).map(s => s.replace(/^\s*--.*$/gm, '').trim()).filter(Boolean);
   (async () => {
     for (const stmt of sql) {
